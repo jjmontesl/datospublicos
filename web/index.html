@@ -42,10 +42,13 @@
     
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.cache.js"></script>
+    <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.googleanalytics.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.model.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.explore.js"></script>
+    <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.datefilter.js"></script>
+    <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.rangefilter.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.series.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.chart.js"></script>
     <script type="text/javascript" src="static/js/cubesviewer/cubesviewer.views.cube.facts.js"></script>
@@ -123,26 +126,26 @@
     <div id="container">
       <div class="inner">
 
-        <header>
-          <h1>datosPublicos<span style="color: #ffc400;">.org</span><span style="color: #c60b1e ;">.es</span></h1>
-          <h2>Visor de Presupuestos Generales del Estado</h2>
-        </header>
-
+        <div style="background-image: url(static/img/datospublicos-front.png); ">
+            <header>
+              <div style="float: left; margin: 5px; background-color: #f8f8ff;">
+                      <img src="static/img/datospublicos-profile.png" style="float: left; width: 120px; height: 120px; margin: 5px 20px 5px 5px;" />
+                      <div style="padding-top: 20px;">
+                      <h1 >datosPublicos<span style="color: #ffc400;">.org</span><span style="color: #c60b1e ;">.es</span></h1>
+                      <h2>Visor de Presupuestos Generales del Estado</h2>
+                      </div>
+              </div>
+              <div style="clear: both;"></div>
+            </header>   
+        </div>
+        
         <section id="main_content">
         
-            <p>
-            Visor analítico para los Presupuestos Generales del Estado Español.
+            <p style="margin-top: 15px; ">
             <p>
             
-            <p>Es necesario que España proporcione muchos más datos (especialmente respecto a los gastos, 
-            incluyendo los beneficiarios de los contratos públicos, con el grano más fino posible y en formatos
-            utilizables por máquinas). Ninguna empresa pasaría hoy en día sin este tipo de información, 
-            y sin embargo, resulta asombroso que como estado no la tengamos disponible.</p> 
-
         </section>
 
-        <hr>
-        
         <!-- Cubes Viewer GUI container -->
         <div id="cubesviewer">
         
@@ -155,7 +158,7 @@
         </div>        
 
         <footer>
-          <p style="text-align: center;">Sitio creado y mantenido por <a href="https://twitter.com/jjmontes">Jose Juan Montes</a>, 
+          <p style="text-align: center; margin-top: 20px;">Sitio creado y mantenido por <a href="https://twitter.com/jjmontes">Jose Juan Montes</a>, 
             con la colaboración de 
             <a href="https://twitter.com/mateobur">Mateo Burillo</a> y <a href="http://www.pabloarias.eu/">Pablo Arias</a>. 
             Está basado en los datos procesados y puestos a disposición de todos por 
@@ -168,15 +171,24 @@
       </div>
     </div>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+<script type="text/javascript">
 
-  ga('create', 'UA-6169223-5', 'datospublicos.org.es');
-  ga('send', 'pageview');
-</script>      
-    
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-6169223-5']); // datospublicos.org.es
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+  function eventLogTimeGoogleAnalytics() {
+	  _gaq.push(['_trackEvent', 'Time', 'Ping']);
+  }
+  setInterval( eventLogTimeGoogleAnalytics, 30000 );
+  
+</script>
+
   </body>
 </html>
