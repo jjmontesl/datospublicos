@@ -1,5 +1,60 @@
 {
     "dimensions": [
+              
+      {
+            "comment": "This is used as a template for other date dimensions.",
+            
+            "name": "date_base",
+            "label": "Date Base",
+            "info": {
+                "cv-datefilter": true,
+                "cv-datefilter-hierarchy": "weekly"
+            },
+            "levels": [
+                {
+                    "name":"year",
+                    "label":"Year",
+                    "info": { "cv-datefilter-field": "year" }
+                },
+                {
+                    "name":"quarter",
+                    "label":"Quarter"
+                },
+                {
+                    "name":"month",
+                    "label":"Month"
+                },
+                {
+                    "name":"week",
+                    "label":"Week",
+                    "info": { "cv-datefilter-field": "week" }
+                }
+            ],
+            "hierarchies": [
+                {
+                    "name": "weekly",
+                    "label": "Weekly",
+                    "levels": [ "year", "week"]
+                },
+                {
+                    "name": "monthly",
+                    "label": "Monthly",
+                    "levels": [ "year", "quarter", "month"]
+                }
+            ]
+        },
+        
+        {
+            "name": "contractor_date_provisional",
+            "label": "Fecha Resolución Provisional",
+            "template": "date_base"
+        },
+        
+        {
+            "name": "contractor_date_final",
+            "label": "Fecha Resolución Final",
+            "template": "date_base"
+        },              
                    
         {
             "name": "date_year",
@@ -99,7 +154,34 @@
                 "label_attribute": "pge_concepts_name",
                 "key": "pge_concepts_id"
             } ]
+        },
+        
+        {
+            "name": "procedure_state",
+            "label": "Estado",
+            "attributes": [ "procedure_state", "procedure_state_label" ],
+            "label_attribute": "procedure_state_label"
+        },     
+        {
+            "name": "procedure_type",
+            "label": "Tipo Procedimiento",
+            "attributes": [ "procedure_type", "procedure_type_label" ],
+            "label_attribute": "procedure_type_label"
+        },
+        {
+            "name": "procedure_contract",
+            "label": "Tipo Contrato",
+            "attributes": [ "procedure_contract", "procedure_contract_label" ],
+            "label_attribute": "procedure_contract_label"
+        },
+        {
+            "name": "pcpg_company",
+            "label": "Adjudicatario",
+            "attributes": [ "id", "name" ],
+            "label_attribute": "name",
+            "key": "id"
         }
+        
 
     ],
 
@@ -203,6 +285,54 @@
                 "pge_concepts.level2_id": "pge_concepts_l2.id",
                 "pge_concepts.level3": "pge_concepts_l3.level3",
                 "pge_concepts.level3_id": "pge_concepts_l3.id"
+            }
+        },
+        
+        {
+            "name": "pcpg_process",
+            "label": "Contratos Galicia / Licitaciones",
+            "dimensions": ["procedure_state", "procedure_type", "procedure_contract",
+                           "contractor_date_final", 
+                           "pcpg_company"  ],
+            "measures": [
+                {"name": "procedure_amount", "aggregations": ["sum", "avg", "max", "min"] },
+                {"name": "contractor_amount", "aggregations": ["sum", "avg", "max", "min"] }
+            ],
+            
+            "joins": [
+                  {
+                      "master": "pcpg_process.contractor_date_final",
+                      "detail": "dates.id",
+                      "alias": "dim_contractor_date_final"
+                  },
+                  {
+                      "master": "pcpg_process.contractor_date_provisional",
+                      "detail": "dates.id",
+                      "alias": "dim_contractor_date_provisional"
+                  },
+                  {
+                      "master": "pcpg_process.contractor_company_id",
+                      "detail": "pcpg_company.id"
+                  }
+            ],            
+            
+            "mappings": {
+                "pcpg_company.id": "pcpg_company.id",
+                "pcpg_company.name": "pcpg_company.name",
+                "contractor_date_provisional.year": "dim_contractor_date_provisional.date_year",
+                "contractor_date_provisional.quarter": "dim_contractor_date_provisional.date_quarter",
+                "contractor_date_provisional.month": "dim_contractor_date_provisional.date_month",
+                "contractor_date_provisional.week": "dim_contractor_date_provisional.date_week",
+                "contractor_date_final.year": "dim_contractor_date_final.date_year",
+                "contractor_date_final.quarter": "dim_contractor_date_final.date_quarter",
+                "contractor_date_final.month": "dim_contractor_date_final.date_month",
+                "contractor_date_final.week": "dim_contractor_date_final.date_week",
+                "procedure_state.procedure_state": "pcpg_process.procedure_state",
+                "procedure_state.procedure_state_label": "pcpg_process.procedure_state_label",
+                "procedure_type.procedure_type": "pcpg_process.procedure_type",
+                "procedure_type.procedure_type_label": "pcpg_process.procedure_type_label",
+                "procedure_contract.procedure_contract": "pcpg_process.procedure_contract",
+                "procedure_contract.procedure_contract_label": "pcpg_process.procedure_contract_label"
             }
         }
         
