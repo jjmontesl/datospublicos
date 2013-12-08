@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects xmlns="http://www.springframework.org/springpython/schema/objects/1.1"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/springpython/schema/objects/1.1
+               http://springpython.webfactional.com/schema/context/spring-python-context-1.1.xsd">
+
+
+    <object id="connection-sql-target" class="cubetl.sql.Connection" scope="singleton">
+        <property name="url" value="sqlite:////tmp/test.sqlite" /> 
+        <!-- <property name="url" value="mysql://root@localhost/cubetl?charset=utf8" /> -->
+    </object>
+    
+    <object id="properties-datospublicos" class="cubetl.core.ContextProperties" scope="singleton">
+        <property name="path_data" value="/home/jjmontes/git/datospublicos/data" />
+    </object>
+
+    <object id="node-logperformance" class="cubetl.util.log.LogPerformance" scope="singleton">
+    </object>  
+    
+    <object id="export-cubes-model" class="cubetl.cubes.CubesModelWriter" scope="singleton">
+        <property name="olapmapper">
+	        <object id="olap-sql-mapper-dvmi-autonomy" class="cubetl.olap.OlapMapper" scope="singleton">
+		        <property name="include">
+		            <list>
+		                <ref object="olap-sql-mapper-boe-analysis" />
+		                <ref object="olap-sql-mapper-dvmi-autonomy" />
+		            </list>
+		        </property>
+	        </object>
+        </property>
+    </object>
+
+</objects>

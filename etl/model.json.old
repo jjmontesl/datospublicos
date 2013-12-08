@@ -1,0 +1,342 @@
+{
+    "dimensions": [
+              
+      {
+            "comment": "This is used as a template for other date dimensions.",
+            
+            "name": "date_base",
+            "label": "Date Base",
+            "info": {
+                "cv-datefilter": true,
+                "cv-datefilter-hierarchy": "weekly"
+            },
+            "levels": [
+                {
+                    "name":"year",
+                    "label":"Year",
+                    "info": { "cv-datefilter-field": "year" }
+                },
+                {
+                    "name":"quarter",
+                    "label":"Quarter"
+                },
+                {
+                    "name":"month",
+                    "label":"Month"
+                },
+                {
+                    "name":"week",
+                    "label":"Week",
+                    "info": { "cv-datefilter-field": "week" }
+                }
+            ],
+            "hierarchies": [
+                {
+                    "name": "weekly",
+                    "label": "Weekly",
+                    "levels": [ "year", "week"]
+                },
+                {
+                    "name": "monthly",
+                    "label": "Monthly",
+                    "levels": [ "year", "quarter", "month"]
+                }
+            ]
+        },
+        
+        {
+            "name": "contractor_date_provisional",
+            "label": "Fecha Resolución Provisional",
+            "template": "date_base"
+        },
+        
+        {
+            "name": "contractor_date_final",
+            "label": "Fecha Resolución Final",
+            "template": "date_base"
+        },              
+                   
+        {
+            "name": "date_year",
+            "label": "Año",
+    	    "info": {
+        		"cv-rangefilter": true,
+        		"cv-rangefilter-slider": {
+        			"min": 2006, 
+        			"max": 2012, 
+        			"step": 1
+        		}
+    	    }
+        },
+        
+        {
+            "name": "ccaa",
+            "label": "Comunidad"			,
+            "levels": [ {
+                "name": "ccaa",
+                "label": "Comunidad",
+                "attributes": [ "id", "ccaa_label" ],
+                "label_attribute": "ccaa_label"
+            } ]
+        },
+        
+        {
+            "name": "genre",
+            "label": "Sexo"
+        },        
+        
+        {
+            "name": "function",
+            "label": "Función",
+            "levels": [ {
+                "name": "function",
+                "label": "Función",
+                "attributes": [ "function_code", "function_label" ],
+                "label_attribute": "function_label"
+            } ]
+        },
+        
+       {
+            "name": "pge_organisms",
+            "label": "Organismo",
+            "levels": [ {
+                "name": "pge_section",
+                "label": "Sección",
+                "attributes": [ "pge_section_id", "pge_section_name" ],
+                "label_attribute": "pge_section_name",
+                "key": "pge_section_id"
+            }, {
+                "name": "pge_organisms",
+                "label": "Organismo",
+                "attributes": [ "pge_organisms_id", "pge_organisms_name" ],
+                "label_attribute": "pge_organisms_name",
+                "key": "pge_organisms_id"
+            } ]
+        },
+        
+         {
+            "name": "pge_groups",
+            "label": "Programa",
+            "levels": [ {
+                "name": "pge_groups",
+                "label": "Programa",
+                "attributes": [ "pge_groups_id", "pge_groups_name" ],
+                "label_attribute": "pge_groups_name",
+                "key": "pge_groups_id"
+            } ]
+        },
+        
+        {
+            "name": "pge_concepts",
+            "label": "Concepto",
+            "levels": [ {
+                "name": "level1",
+                "label": "Capítulo",
+                "attributes": [ "level1_id", "level1" ],
+                "label_attribute": "level1",
+                "key": "level1_id"
+            }, {
+                "name": "level2",
+                "label": "Artículo",
+                "attributes": [ "level2_id", "level2" ],
+                "label_attribute": "level2",
+                "key": "level2_id"
+            }, {
+                "name": "level3",
+                "label": "Concepto",
+                "attributes": [ "level3_id", "level3" ],
+                "label_attribute": "level3",
+                "key": "level3_id"
+            }, {
+                "name": "pge_concepts",
+                "label": "Subconcepto",
+                "attributes": [ "pge_concepts_id", "pge_concepts_name" ],
+                "label_attribute": "pge_concepts_name",
+                "key": "pge_concepts_id"
+            } ]
+        },
+        
+        {
+            "name": "procedure_state",
+            "label": "Estado",
+            "attributes": [ "procedure_state", "procedure_state_label" ],
+            "label_attribute": "procedure_state_label"
+        },     
+        {
+            "name": "procedure_type",
+            "label": "Tipo Procedimiento",
+            "attributes": [ "procedure_type", "procedure_type_label" ],
+            "label_attribute": "procedure_type_label"
+        },
+        {
+            "name": "procedure_contract",
+            "label": "Tipo Contrato",
+            "attributes": [ "procedure_contract", "procedure_contract_label" ],
+            "label_attribute": "procedure_contract_label"
+        },
+        {
+            "name": "pcpg_company",
+            "label": "Adjudicatario",
+            "attributes": [ "id", "name" ],
+            "label_attribute": "name",
+            "key": "id"
+        }
+        
+
+    ],
+
+    "cubes": [
+
+        {
+            "name": "ccaa_census",
+            "label": "CCAA / Censo",
+            "dimensions": ["date_year", "ccaa", "genre" ],
+            "measures": [
+		        {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] }
+            ],
+            
+            "joins": [
+                  {
+                      "master": "ccaa_census.ccaa_id",
+                      "detail": "ccaa.id"
+                  }
+            ],            
+            
+            "mappings": {
+            }
+        },
+        
+        {
+            "name": "ccaa_budget",
+            "label": "CCAA / Presupuestos",
+            "dimensions": ["date_year", "ccaa", "function" ],
+            "measures": [
+                {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] },
+                {"name": "amount_per_capita", "aggregations": ["sum", "max", "min"] },
+                {"name": "amount_per_ccaa_capita", "aggregations": ["sum", "max", "min"] }
+            ],
+            
+            "joins": [
+                  {
+                      "master": "ccaa_budget.ccaa_id",
+                      "detail": "ccaa.id"
+                  }
+            ],            
+            
+            "mappings": {
+                "function.function_code": "ccaa_budget.function_code",
+                "function.function_label": "ccaa_budget.function_label"
+            }
+        },
+        
+       {
+            "name": "pge_expenses",
+            "label": "PGE / Presupuestos",
+            "dimensions": ["date_year", "pge_organisms", "pge_groups", "pge_concepts" ],
+            "measures": [
+                {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] },
+                {"name": "amount_per_capita", "aggregations": ["sum", "max", "min"] }
+            ],
+            
+            "joins": [
+                  {
+                      "master": "pge_expenses.pge_organism_id",
+                      "detail": "pge_organisms.id"
+                  },
+                  {
+                    "master": "pge_organisms.pge_sections_id",
+                    "detail": "pge_sections.id"
+                  },
+                  {
+                      "master": "pge_expenses.pge_group_id",
+                      "detail": "pge_groups.id"
+                  },
+                  {
+                      "master": "pge_expenses.pge_concept_id",
+                      "detail": "pge_concepts.id"
+                  },
+                  {
+                      "master": "pge_concepts.level3_id",
+                      "detail": "pge_concepts_l3.id"
+                  },
+                  {
+                      "master": "pge_concepts_l3.level2_id",
+                      "detail": "pge_concepts_l2.id"
+                  },
+                  {
+                      "master": "pge_concepts_l2.level1_id",
+                      "detail": "pge_concepts_l1.id"
+                  }
+            ],            
+            
+            "mappings": {
+                "pge_organisms.pge_section_id": "pge_sections.id",
+                "pge_organisms.pge_section_name": "pge_sections.name",
+                "pge_organisms.pge_organisms_id": "pge_organisms.id",
+                "pge_organisms.pge_organisms_name": "pge_organisms.name",
+                "pge_organisms_type": "pge_organisms.organism_type",
+                "pge_groups.pge_groups_id": "pge_groups.id",
+                "pge_groups.pge_groups_name": "pge_groups.name",
+                "pge_concepts.pge_concepts_id": "pge_concepts.id",
+                "pge_concepts.pge_concepts_name": "pge_concepts.name",
+                "pge_concepts.level1": "pge_concepts_l1.level1",
+                "pge_concepts.level1_id": "pge_concepts_l1.id",
+                "pge_concepts.level2": "pge_concepts_l2.level2",
+                "pge_concepts.level2_id": "pge_concepts_l2.id",
+                "pge_concepts.level3": "pge_concepts_l3.level3",
+                "pge_concepts.level3_id": "pge_concepts_l3.id"
+            }
+        },
+        
+        {
+            "name": "pcpg_process",
+            "label": "Contratos Galicia / Licitaciones",
+            "dimensions": ["procedure_state", "procedure_type", "procedure_contract",
+                           "contractor_date_final", 
+                           "pcpg_company"  ],
+            "measures": [
+                {"name": "procedure_amount", "aggregations": ["sum", "avg", "max", "min"] },
+                {"name": "contractor_amount", "aggregations": ["sum", "avg", "max", "min"] }
+            ],
+            
+            "joins": [
+                  {
+                      "master": "pcpg_process.contractor_date_final",
+                      "detail": "dates.id",
+                      "alias": "dim_contractor_date_final"
+                  },
+                  {
+                      "master": "pcpg_process.contractor_date_provisional",
+                      "detail": "dates.id",
+                      "alias": "dim_contractor_date_provisional"
+                  },
+                  {
+                      "master": "pcpg_process.contractor_company_id",
+                      "detail": "pcpg_company.id"
+                  }
+            ],            
+            
+            "mappings": {
+                "pcpg_company.id": "pcpg_company.id",
+                "pcpg_company.name": "pcpg_company.name",
+                "contractor_date_provisional.year": "dim_contractor_date_provisional.date_year",
+                "contractor_date_provisional.quarter": "dim_contractor_date_provisional.date_quarter",
+                "contractor_date_provisional.month": "dim_contractor_date_provisional.date_month",
+                "contractor_date_provisional.week": "dim_contractor_date_provisional.date_week",
+                "contractor_date_final.year": "dim_contractor_date_final.date_year",
+                "contractor_date_final.quarter": "dim_contractor_date_final.date_quarter",
+                "contractor_date_final.month": "dim_contractor_date_final.date_month",
+                "contractor_date_final.week": "dim_contractor_date_final.date_week",
+                "procedure_state.procedure_state": "pcpg_process.procedure_state",
+                "procedure_state.procedure_state_label": "pcpg_process.procedure_state_label",
+                "procedure_type.procedure_type": "pcpg_process.procedure_type",
+                "procedure_type.procedure_type_label": "pcpg_process.procedure_type_label",
+                "procedure_contract.procedure_contract": "pcpg_process.procedure_contract",
+                "procedure_contract.procedure_contract_label": "pcpg_process.procedure_contract_label"
+            }
+        }
+        
+        
+        
+    ]
+}

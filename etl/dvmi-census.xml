@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects xmlns="http://www.springframework.org/springpython/schema/objects/1.1"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/springpython/schema/objects/1.1
+               http://springpython.webfactional.com/schema/context/spring-python-context-1.1.xsd">
+
+
+    <object id="dim-year" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="year" ></property>
+        <property name="label" value="Año" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>year</value></entry>
+                    <entry><key><value>type</value></key><value>Integer</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>
+    
+    <object id="dim-autonomy" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="autonomy" ></property>
+        <property name="label" value="Comunidad Autónoma" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>name</value></entry>
+                    <entry><key><value>type</value></key><value>String</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>
+    
+    <object id="dim-genre" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="genre" ></property>
+        <property name="label" value="Género" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>genre</value></entry>
+                    <entry><key><value>type</value></key><value>String</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>  
+
+    <object id="fact-ine-census" class="cubetl.olap.Fact" scope="singleton">
+        
+        <property name="name" value="ine_census" />
+        <property name="label" value="INE / Censo" />
+        
+        <property name="dimensions" >
+            <list>
+                <ref object="dim-year" />
+                <ref object="dim-genre" />
+                <ref object="dim-autonomy" />
+            </list>
+        </property>
+        <property name="measures" >
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>census</value></entry>
+                    <entry><key><value>type</value></key><value>Integer</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object> 
+
+    <object id="olap-sql-mapper-dvmi" class="cubetl.olap.OlapMapper" scope="singleton">
+    
+        <property name="include">
+            <list>
+            </list>
+        </property>
+    
+        <property name="mappers">
+            <list>
+            
+                <object class="cubetl.olap.sql.SQLEmbeddedDimensionMapper" >
+		            <property name="dimension" ref="dim-year" />
+		            <property name="mappings">
+		                <list>
+		                    <dict>
+		                        <entry><key><value>name</value></key><value>year</value></entry>
+		                    </dict>
+		                </list>
+		            </property>        
+		        </object>  
+            
+                <object class="cubetl.olap.sql.SQLDimensionMapper" >
+                    <property name="dimension" ref="dim-autonomy" />
+                    <property name="table" value="autonomy" />
+                    <property name="connection" ref="connection-sql-target" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>id</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["autonomy_id"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                                <entry><key><value>type</value></key><value>Integer</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["autonomy_name"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>
+                
+                <object class="cubetl.olap.sql.SQLEmbeddedDimensionMapper" >
+                    <property name="dimension" ref="dim-genre" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>genre</value></entry>
+                            </dict>
+                        </list>
+                    </property>        
+                </object>
+                
+                <object class="cubetl.olap.sql.SQLFactMapper" >
+                    <property name="fact" ref="fact-ine-census" />
+                    <property name="table" value="ine_census" />
+                    <property name="connection" ref="connection-sql-target" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>id</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                                <entry><key><value>type</value></key><value>AutoIncrement</value></entry>
+                            </dict>
+                        </list>
+                    </property>        
+                </object>                
+                
+            </list>
+        </property>
+        
+    </object>
+
+    <object id="node-storefact-ine-census" class="cubetl.olap.StoreFact" >
+        <property name="fact" ref="fact-ine-census" />
+        <property name="mapper" ref="olap-sql-mapper-dvmi" />
+    </object> 
+
+    <object id="process-dvmi-census" class="cubetl.flow.Chain" scope="singleton">
+        <property name="steps">
+            <list>
+            
+                <object class="cubetl.flow.Chain">
+			        <property name="fork" value="True" />
+			        <property name="steps">
+			            <list>
+                            
+                            <ref object="node-sql-transaction" />
+                            
+                            <object class="cubetl.flow.Iterator" >
+                                <property name="name" value="year" />
+                                <property name="values" value="2006, 2007, 2008, 2009, 2010, 2011, 2012" />
+                            </object>
+                            
+                            <object class="cubetl.csv.CsvFileReader" >
+						        <property name="filename" value="${ ctx.props['path_data'] }/dvmi/data/censo/Censo${ m['year'] }.csv" />
+						        
+						        <property name="header" value="True" />
+						    </object>
+						    
+                            <object class="cubetl.script.Eval" >
+                                <property name="mappings">
+                                    <list>
+                                        <dict>
+                                            <entry><key><value>name</value></key><value>autonomy_id</value></entry>
+                                            <entry><key><value>eval</value></key><value>${ m['Idcomu'] }</value></entry>
+                                        </dict>
+                                        <dict>
+                                            <entry><key><value>name</value></key><value>autonomy_name</value></entry>
+                                            <entry><key><value>eval</value></key><value>${ m['Comunidad'] }</value></entry>
+                                        </dict>
+                                    </list>
+                                </property>
+                            </object>						    
+						    
+						    <object class="cubetl.flow.MultiEval" >
+                                <property name="instances">
+                                    <list>
+                                        <list>
+                                            <dict>
+							                    <entry><key><value>name</value></key><value>genre</value></entry>
+							                    <entry><key><value>eval</value></key><value>Varones</value></entry>
+							                </dict>
+							                <dict>
+							                    <entry><key><value>name</value></key><value>census</value></entry>
+							                    <entry><key><value>eval</value></key><value>${ m["Varones"] }</value></entry>
+							                </dict>
+							            </list>
+                                        <list>
+                                            <dict>
+                                                <entry><key><value>name</value></key><value>genre</value></entry>
+                                                <entry><key><value>eval</value></key><value>Mujeres</value></entry>
+                                            </dict>
+                                            <dict>
+                                                <entry><key><value>name</value></key><value>census</value></entry>
+                                                <entry><key><value>eval</value></key><value>${ m["Mujeres"] }</value></entry>
+                                            </dict>
+                                        </list>	
+                                    </list>
+                                </property>
+                            </object>
+                            
+            <!-- 
+                             "genre": "Mujeres", 
+                             "amount": arow["Mujeres"] }
+                save_object ("ccaa_census", fact_male)   
+                
+                ccaa_census[arow["Idcomu"] + "-" + str(year)] = float(arow["Varones"]) + float(arow["Mujeres"])
+                if (not str(year) in ccaa_census): ccaa_census[str(year)] = 0   
+                ccaa_census[str(year)] =  ccaa_census[str(year)] +  ccaa_census[arow["Idcomu"] + "-" + str(year)]   
+                
+    print "Imported %d facts " % (count)
+    
+    return ccaa_census
+    --> 
+
+                
+			                <ref object="node-storefact-ine-census" />
+
+                            <ref object="cubetl-node-print" />
+                            <ref object="node-logperformance" /> 
+			                
+			            </list>
+			        </property>
+			                
+			    </object>  
+			    
+            </list>
+        </property>  
+    </object>
+
+</objects>

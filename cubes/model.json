@@ -1,342 +1,633 @@
 {
-    "dimensions": [
-              
-      {
-            "comment": "This is used as a template for other date dimensions.",
-            
-            "name": "date_base",
-            "label": "Date Base",
-            "info": {
-                "cv-datefilter": true,
-                "cv-datefilter-hierarchy": "weekly"
-            },
-            "levels": [
+    "cubes": [
+        {
+            "details": [
+                "url_pdf", 
+                "page_start", 
+                "page_end"
+            ], 
+            "dimensions": [
+                "date_published", 
+                "department", 
+                "imageletter", 
+                "section", 
+                "journal_num", 
+                "hasanalysis"
+            ], 
+            "joins": [
                 {
-                    "name":"year",
-                    "label":"Year",
-                    "info": { "cv-datefilter-field": "year" }
-                },
+                    "alias": "date_published", 
+                    "detail": "date_published.id", 
+                    "master": "boe_article.date_published_id"
+                }, 
                 {
-                    "name":"quarter",
-                    "label":"Quarter"
-                },
+                    "alias": "department", 
+                    "detail": "department.id", 
+                    "master": "boe_article.department_id"
+                }, 
                 {
-                    "name":"month",
-                    "label":"Month"
-                },
+                    "alias": "imageletter", 
+                    "detail": "imageletter.id", 
+                    "master": "boe_article.imageletter_id"
+                }, 
                 {
-                    "name":"week",
-                    "label":"Week",
-                    "info": { "cv-datefilter-field": "week" }
+                    "alias": "section", 
+                    "detail": "section.id", 
+                    "master": "boe_article.section_id"
                 }
-            ],
+            ], 
+            "key": "id", 
+            "label": "boe_article", 
+            "mappings": {
+                "date_published.day": "date_published.day", 
+                "date_published.id": "date_published.id", 
+                "date_published.month": "date_published.month", 
+                "date_published.quarter": "date_published.quarter", 
+                "date_published.week": "date_published.week", 
+                "date_published.year": "date_published.year", 
+                "department.department": "department.department", 
+                "department.id": "department.id", 
+                "hasanalysis": "boe_article.hasanalysis", 
+                "imageletter.id": "imageletter.id", 
+                "imageletter.image_letter": "imageletter.image_letter", 
+                "journal_num": "boe_article.journal_num", 
+                "section.id": "section.id", 
+                "section.section": "section.section"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "page_count"
+                }
+            ], 
+            "name": "boe_article"
+        }, 
+        {
+            "details": [
+                "notes"
+            ], 
+            "dimensions": [
+                "modality", 
+                "type", 
+                "tramitation", 
+                "procedure", 
+                "concept", 
+                "geographic_scope", 
+                "date_published", 
+                "department", 
+                "imageletter", 
+                "section", 
+                "journal_num", 
+                "hasanalysis"
+            ], 
+            "joins": [
+                {
+                    "alias": "modality", 
+                    "detail": "modality.id", 
+                    "master": "boe_analysis.modality_id"
+                }, 
+                {
+                    "alias": "type", 
+                    "detail": "type.id", 
+                    "master": "boe_analysis.type_id"
+                }, 
+                {
+                    "alias": "tramitation", 
+                    "detail": "tramitation.id", 
+                    "master": "boe_analysis.tramitation_id"
+                }, 
+                {
+                    "alias": "procedure", 
+                    "detail": "procedure.id", 
+                    "master": "boe_analysis.procedure_id"
+                }, 
+                {
+                    "alias": "concept", 
+                    "detail": "concept.id", 
+                    "master": "boe_analysis.concept_id"
+                }, 
+                {
+                    "alias": "geographic_scope", 
+                    "detail": "geographic_scope.id", 
+                    "master": "boe_analysis.geographic_scope_id"
+                }, 
+                {
+                    "alias": "boe_article", 
+                    "detail": "boe_article.id", 
+                    "master": "boe_analysis.boe_article_id"
+                }, 
+                {
+                    "alias": "date_published", 
+                    "detail": "date_published.id", 
+                    "master": "boe_article.date_published_id"
+                }, 
+                {
+                    "alias": "department", 
+                    "detail": "department.id", 
+                    "master": "boe_article.department_id"
+                }, 
+                {
+                    "alias": "imageletter", 
+                    "detail": "imageletter.id", 
+                    "master": "boe_article.imageletter_id"
+                }, 
+                {
+                    "alias": "section", 
+                    "detail": "section.id", 
+                    "master": "boe_article.section_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "boe_analysis", 
+            "mappings": {
+                "concept.concept": "concept.concept", 
+                "concept.id": "concept.id", 
+                "date_published.day": "date_published.day", 
+                "date_published.id": "date_published.id", 
+                "date_published.month": "date_published.month", 
+                "date_published.quarter": "date_published.quarter", 
+                "date_published.week": "date_published.week", 
+                "date_published.year": "date_published.year", 
+                "department.department": "department.department", 
+                "department.id": "department.id", 
+                "geographic_scope.geographic_scope": "geographic_scope.geographic_scope", 
+                "geographic_scope.id": "geographic_scope.id", 
+                "hasanalysis": "boe_article.hasanalysis", 
+                "imageletter.id": "imageletter.id", 
+                "imageletter.image_letter": "imageletter.image_letter", 
+                "journal_num": "boe_article.journal_num", 
+                "modality.id": "modality.id", 
+                "modality.modality": "modality.modality", 
+                "procedure.id": "procedure.id", 
+                "procedure.procedure": "procedure.procedure", 
+                "section.id": "section.id", 
+                "section.section": "section.section", 
+                "tramitation.id": "tramitation.id", 
+                "tramitation.tramitation": "tramitation.tramitation", 
+                "type.id": "type.id", 
+                "type.type": "type.type"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "cost"
+                }
+            ], 
+            "name": "boe_analysis"
+        }, 
+        {
+            "details": [], 
+            "dimensions": [
+                "year", 
+                "genre", 
+                "autonomy"
+            ], 
+            "joins": [
+                {
+                    "alias": "autonomy", 
+                    "detail": "autonomy.id", 
+                    "master": "ine_census.autonomy_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "ine_census", 
+            "mappings": {
+                "autonomy.id": "autonomy.id", 
+                "autonomy.name": "autonomy.name", 
+                "genre": "ine_census.genre", 
+                "year": "ine_census.year"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "census"
+                }
+            ], 
+            "name": "ine_census"
+        }, 
+        {
+            "details": [], 
+            "dimensions": [
+                "year", 
+                "autonomy", 
+                "function"
+            ], 
+            "joins": [
+                {
+                    "alias": "autonomy", 
+                    "detail": "autonomy.id", 
+                    "master": "dvmi_budget_autonomy.autonomy_id"
+                }, 
+                {
+                    "alias": "function", 
+                    "detail": "function.id", 
+                    "master": "dvmi_budget_autonomy.function_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "dvmi_budget_autonomy", 
+            "mappings": {
+                "autonomy.id": "autonomy.id", 
+                "autonomy.name": "autonomy.name", 
+                "function.function": "function.function", 
+                "function.id": "function.id", 
+                "year": "dvmi_budget_autonomy.year"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "expense_total"
+                }, 
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "expense_per_person"
+                }, 
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "expense_per_autonomy_person"
+                }
+            ], 
+            "name": "dvmi_budget_autonomy"
+        }
+    ], 
+    "dimensions": [
+        {
+            "comment": "Generated by CubETL", 
             "hierarchies": [
                 {
-                    "name": "weekly",
-                    "label": "Weekly",
-                    "levels": [ "year", "week"]
-                },
+                    "label": "Daily", 
+                    "levels": [
+                        "year", 
+                        "quarter", 
+                        "month", 
+                        "day"
+                    ], 
+                    "name": "daily"
+                }, 
                 {
-                    "name": "monthly",
-                    "label": "Monthly",
-                    "levels": [ "year", "quarter", "month"]
+                    "label": "Weekly", 
+                    "levels": [
+                        "year", 
+                        "week"
+                    ], 
+                    "name": "weekly"
                 }
-            ]
-        },
-        
+            ], 
+            "info": {
+                "cv-datefilter": true, 
+                "cv-datefilter-hierarchy": "daily"
+            }, 
+            "label": "Fecha Publicaci\u00f3n", 
+            "levels": [
+                {
+                    "attributes": [
+                        "year"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "year"
+                    }, 
+                    "key": "year", 
+                    "label": "Year", 
+                    "label_attribute": "year", 
+                    "name": "year"
+                }, 
+                {
+                    "attributes": [
+                        "quarter"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "quarter"
+                    }, 
+                    "key": "quarter", 
+                    "label": "Quarter", 
+                    "label_attribute": "quarter", 
+                    "name": "quarter"
+                }, 
+                {
+                    "attributes": [
+                        "month"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "month"
+                    }, 
+                    "key": "month", 
+                    "label": "Month", 
+                    "label_attribute": "month", 
+                    "name": "month"
+                }, 
+                {
+                    "attributes": [
+                        "week"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "week"
+                    }, 
+                    "key": "week", 
+                    "label": "Week", 
+                    "label_attribute": "week", 
+                    "name": "week"
+                }, 
+                {
+                    "attributes": [
+                        "day"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "day"
+                    }, 
+                    "key": "day", 
+                    "label": "Day", 
+                    "label_attribute": "day", 
+                    "name": "day"
+                }
+            ], 
+            "name": "date_published"
+        }, 
         {
-            "name": "contractor_date_provisional",
-            "label": "Fecha Resolución Provisional",
-            "template": "date_base"
-        },
-        
+            "comment": "Generated by CubETL", 
+            "label": "Departamento", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "department"
+                    ], 
+                    "key": "id", 
+                    "label": "Departamento", 
+                    "label_attribute": "department", 
+                    "name": "department"
+                }
+            ], 
+            "name": "department"
+        }, 
         {
-            "name": "contractor_date_final",
-            "label": "Fecha Resolución Final",
-            "template": "date_base"
-        },              
-                   
+            "comment": "Generated by CubETL", 
+            "label": "Letra Imagen", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "image_letter"
+                    ], 
+                    "key": "id", 
+                    "label": "image_letter", 
+                    "label_attribute": "image_letter", 
+                    "name": "image_letter"
+                }
+            ], 
+            "name": "imageletter"
+        }, 
         {
-            "name": "date_year",
-            "label": "Año",
-    	    "info": {
-        		"cv-rangefilter": true,
-        		"cv-rangefilter-slider": {
-        			"min": 2006, 
-        			"max": 2012, 
-        			"step": 1
-        		}
-    	    }
-        },
-        
+            "comment": "Generated by CubETL", 
+            "label": "Seccion", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "section"
+                    ], 
+                    "key": "id", 
+                    "label": "Seccion", 
+                    "label_attribute": "section", 
+                    "name": "section"
+                }
+            ], 
+            "name": "section"
+        }, 
         {
-            "name": "ccaa",
-            "label": "Comunidad"			,
-            "levels": [ {
-                "name": "ccaa",
-                "label": "Comunidad",
-                "attributes": [ "id", "ccaa_label" ],
-                "label_attribute": "ccaa_label"
-            } ]
-        },
-        
+            "comment": "Generated by CubETL", 
+            "label": "Diario", 
+            "levels": [
+                {
+                    "attributes": [
+                        "journal_num"
+                    ], 
+                    "key": "journal_num", 
+                    "label": "Diario", 
+                    "label_attribute": "journal_num", 
+                    "name": "journal_num"
+                }
+            ], 
+            "name": "journal_num"
+        }, 
         {
-            "name": "genre",
-            "label": "Sexo"
-        },        
-        
+            "comment": "Generated by CubETL", 
+            "label": "An\u00e1lisis", 
+            "levels": [
+                {
+                    "attributes": [
+                        "hasanalysis"
+                    ], 
+                    "key": "hasanalysis", 
+                    "label": "An\u00e1lisis", 
+                    "label_attribute": "hasanalysis", 
+                    "name": "hasanalysis"
+                }
+            ], 
+            "name": "hasanalysis"
+        }, 
         {
-            "name": "function",
-            "label": "Función",
-            "levels": [ {
-                "name": "function",
-                "label": "Función",
-                "attributes": [ "function_code", "function_label" ],
-                "label_attribute": "function_label"
-            } ]
-        },
-        
-       {
-            "name": "pge_organisms",
-            "label": "Organismo",
-            "levels": [ {
-                "name": "pge_section",
-                "label": "Sección",
-                "attributes": [ "pge_section_id", "pge_section_name" ],
-                "label_attribute": "pge_section_name",
-                "key": "pge_section_id"
-            }, {
-                "name": "pge_organisms",
-                "label": "Organismo",
-                "attributes": [ "pge_organisms_id", "pge_organisms_name" ],
-                "label_attribute": "pge_organisms_name",
-                "key": "pge_organisms_id"
-            } ]
-        },
-        
-         {
-            "name": "pge_groups",
-            "label": "Programa",
-            "levels": [ {
-                "name": "pge_groups",
-                "label": "Programa",
-                "attributes": [ "pge_groups_id", "pge_groups_name" ],
-                "label_attribute": "pge_groups_name",
-                "key": "pge_groups_id"
-            } ]
-        },
-        
+            "comment": "Generated by CubETL", 
+            "label": "Modalidad", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "modality"
+                    ], 
+                    "key": "id", 
+                    "label": "Modalidad", 
+                    "label_attribute": "modality", 
+                    "name": "modality"
+                }
+            ], 
+            "name": "modality"
+        }, 
         {
-            "name": "pge_concepts",
-            "label": "Concepto",
-            "levels": [ {
-                "name": "level1",
-                "label": "Capítulo",
-                "attributes": [ "level1_id", "level1" ],
-                "label_attribute": "level1",
-                "key": "level1_id"
-            }, {
-                "name": "level2",
-                "label": "Artículo",
-                "attributes": [ "level2_id", "level2" ],
-                "label_attribute": "level2",
-                "key": "level2_id"
-            }, {
-                "name": "level3",
-                "label": "Concepto",
-                "attributes": [ "level3_id", "level3" ],
-                "label_attribute": "level3",
-                "key": "level3_id"
-            }, {
-                "name": "pge_concepts",
-                "label": "Subconcepto",
-                "attributes": [ "pge_concepts_id", "pge_concepts_name" ],
-                "label_attribute": "pge_concepts_name",
-                "key": "pge_concepts_id"
-            } ]
-        },
-        
+            "comment": "Generated by CubETL", 
+            "label": "Tipo", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "type"
+                    ], 
+                    "key": "id", 
+                    "label": "Tipo", 
+                    "label_attribute": "type", 
+                    "name": "type"
+                }
+            ], 
+            "name": "type"
+        }, 
         {
-            "name": "procedure_state",
-            "label": "Estado",
-            "attributes": [ "procedure_state", "procedure_state_label" ],
-            "label_attribute": "procedure_state_label"
-        },     
+            "comment": "Generated by CubETL", 
+            "label": "Tramitaci\u00f3n", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "tramitation"
+                    ], 
+                    "key": "id", 
+                    "label": "Tramitaci\u00f3n", 
+                    "label_attribute": "tramitation", 
+                    "name": "tramitation"
+                }
+            ], 
+            "name": "tramitation"
+        }, 
         {
-            "name": "procedure_type",
-            "label": "Tipo Procedimiento",
-            "attributes": [ "procedure_type", "procedure_type_label" ],
-            "label_attribute": "procedure_type_label"
-        },
+            "comment": "Generated by CubETL", 
+            "label": "Procedimiento", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "procedure"
+                    ], 
+                    "key": "id", 
+                    "label": "Procedimiento", 
+                    "label_attribute": "procedure", 
+                    "name": "procedure"
+                }
+            ], 
+            "name": "procedure"
+        }, 
         {
-            "name": "procedure_contract",
-            "label": "Tipo Contrato",
-            "attributes": [ "procedure_contract", "procedure_contract_label" ],
-            "label_attribute": "procedure_contract_label"
-        },
+            "comment": "Generated by CubETL", 
+            "label": "Concepto", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "concept"
+                    ], 
+                    "key": "id", 
+                    "label": "Concepto", 
+                    "label_attribute": "concept", 
+                    "name": "concept"
+                }
+            ], 
+            "name": "concept"
+        }, 
         {
-            "name": "pcpg_company",
-            "label": "Adjudicatario",
-            "attributes": [ "id", "name" ],
-            "label_attribute": "name",
-            "key": "id"
+            "comment": "Generated by CubETL", 
+            "label": "\u00c1mbito Geogr\u00e1fico", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "geographic_scope"
+                    ], 
+                    "key": "id", 
+                    "label": "\u00c1mbito Geogr\u00e1fico", 
+                    "label_attribute": "geographic_scope", 
+                    "name": "geographic_scope"
+                }
+            ], 
+            "name": "geographic_scope"
+        }, 
+        {
+            "comment": "Generated by CubETL", 
+            "label": "Art\u00edculo BOE", 
+            "levels": [], 
+            "name": "boe_article"
+        }, 
+        {
+            "comment": "Generated by CubETL", 
+            "label": "A\u00f1o", 
+            "levels": [
+                {
+                    "attributes": [
+                        "year"
+                    ], 
+                    "key": "year", 
+                    "label": "A\u00f1o", 
+                    "label_attribute": "year", 
+                    "name": "year"
+                }
+            ], 
+            "name": "year"
+        }, 
+        {
+            "comment": "Generated by CubETL", 
+            "label": "Comunidad Aut\u00f3noma", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "name"
+                    ], 
+                    "key": "id", 
+                    "label": "name", 
+                    "label_attribute": "name", 
+                    "name": "name"
+                }
+            ], 
+            "name": "autonomy"
+        }, 
+        {
+            "comment": "Generated by CubETL", 
+            "label": "G\u00e9nero", 
+            "levels": [
+                {
+                    "attributes": [
+                        "genre"
+                    ], 
+                    "key": "genre", 
+                    "label": "G\u00e9nero", 
+                    "label_attribute": "genre", 
+                    "name": "genre"
+                }
+            ], 
+            "name": "genre"
+        }, 
+        {
+            "comment": "Generated by CubETL", 
+            "label": "Funci\u00f3n", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "function"
+                    ], 
+                    "key": "id", 
+                    "label": "Funci\u00f3n", 
+                    "label_attribute": "function", 
+                    "name": "function"
+                }
+            ], 
+            "name": "function"
         }
-        
-
-    ],
-
-    "cubes": [
-
-        {
-            "name": "ccaa_census",
-            "label": "CCAA / Censo",
-            "dimensions": ["date_year", "ccaa", "genre" ],
-            "measures": [
-		        {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] }
-            ],
-            
-            "joins": [
-                  {
-                      "master": "ccaa_census.ccaa_id",
-                      "detail": "ccaa.id"
-                  }
-            ],            
-            
-            "mappings": {
-            }
-        },
-        
-        {
-            "name": "ccaa_budget",
-            "label": "CCAA / Presupuestos",
-            "dimensions": ["date_year", "ccaa", "function" ],
-            "measures": [
-                {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] },
-                {"name": "amount_per_capita", "aggregations": ["sum", "max", "min"] },
-                {"name": "amount_per_ccaa_capita", "aggregations": ["sum", "max", "min"] }
-            ],
-            
-            "joins": [
-                  {
-                      "master": "ccaa_budget.ccaa_id",
-                      "detail": "ccaa.id"
-                  }
-            ],            
-            
-            "mappings": {
-                "function.function_code": "ccaa_budget.function_code",
-                "function.function_label": "ccaa_budget.function_label"
-            }
-        },
-        
-       {
-            "name": "pge_expenses",
-            "label": "PGE / Presupuestos",
-            "dimensions": ["date_year", "pge_organisms", "pge_groups", "pge_concepts" ],
-            "measures": [
-                {"name": "amount", "aggregations": ["sum", "avg", "max", "min"] },
-                {"name": "amount_per_capita", "aggregations": ["sum", "max", "min"] }
-            ],
-            
-            "joins": [
-                  {
-                      "master": "pge_expenses.pge_organism_id",
-                      "detail": "pge_organisms.id"
-                  },
-                  {
-                    "master": "pge_organisms.pge_sections_id",
-                    "detail": "pge_sections.id"
-                  },
-                  {
-                      "master": "pge_expenses.pge_group_id",
-                      "detail": "pge_groups.id"
-                  },
-                  {
-                      "master": "pge_expenses.pge_concept_id",
-                      "detail": "pge_concepts.id"
-                  },
-                  {
-                      "master": "pge_concepts.level3_id",
-                      "detail": "pge_concepts_l3.id"
-                  },
-                  {
-                      "master": "pge_concepts_l3.level2_id",
-                      "detail": "pge_concepts_l2.id"
-                  },
-                  {
-                      "master": "pge_concepts_l2.level1_id",
-                      "detail": "pge_concepts_l1.id"
-                  }
-            ],            
-            
-            "mappings": {
-                "pge_organisms.pge_section_id": "pge_sections.id",
-                "pge_organisms.pge_section_name": "pge_sections.name",
-                "pge_organisms.pge_organisms_id": "pge_organisms.id",
-                "pge_organisms.pge_organisms_name": "pge_organisms.name",
-                "pge_organisms_type": "pge_organisms.organism_type",
-                "pge_groups.pge_groups_id": "pge_groups.id",
-                "pge_groups.pge_groups_name": "pge_groups.name",
-                "pge_concepts.pge_concepts_id": "pge_concepts.id",
-                "pge_concepts.pge_concepts_name": "pge_concepts.name",
-                "pge_concepts.level1": "pge_concepts_l1.level1",
-                "pge_concepts.level1_id": "pge_concepts_l1.id",
-                "pge_concepts.level2": "pge_concepts_l2.level2",
-                "pge_concepts.level2_id": "pge_concepts_l2.id",
-                "pge_concepts.level3": "pge_concepts_l3.level3",
-                "pge_concepts.level3_id": "pge_concepts_l3.id"
-            }
-        },
-        
-        {
-            "name": "pcpg_process",
-            "label": "Contratos Galicia / Licitaciones",
-            "dimensions": ["procedure_state", "procedure_type", "procedure_contract",
-                           "contractor_date_final", 
-                           "pcpg_company"  ],
-            "measures": [
-                {"name": "procedure_amount", "aggregations": ["sum", "avg", "max", "min"] },
-                {"name": "contractor_amount", "aggregations": ["sum", "avg", "max", "min"] }
-            ],
-            
-            "joins": [
-                  {
-                      "master": "pcpg_process.contractor_date_final",
-                      "detail": "dates.id",
-                      "alias": "dim_contractor_date_final"
-                  },
-                  {
-                      "master": "pcpg_process.contractor_date_provisional",
-                      "detail": "dates.id",
-                      "alias": "dim_contractor_date_provisional"
-                  },
-                  {
-                      "master": "pcpg_process.contractor_company_id",
-                      "detail": "pcpg_company.id"
-                  }
-            ],            
-            
-            "mappings": {
-                "pcpg_company.id": "pcpg_company.id",
-                "pcpg_company.name": "pcpg_company.name",
-                "contractor_date_provisional.year": "dim_contractor_date_provisional.date_year",
-                "contractor_date_provisional.quarter": "dim_contractor_date_provisional.date_quarter",
-                "contractor_date_provisional.month": "dim_contractor_date_provisional.date_month",
-                "contractor_date_provisional.week": "dim_contractor_date_provisional.date_week",
-                "contractor_date_final.year": "dim_contractor_date_final.date_year",
-                "contractor_date_final.quarter": "dim_contractor_date_final.date_quarter",
-                "contractor_date_final.month": "dim_contractor_date_final.date_month",
-                "contractor_date_final.week": "dim_contractor_date_final.date_week",
-                "procedure_state.procedure_state": "pcpg_process.procedure_state",
-                "procedure_state.procedure_state_label": "pcpg_process.procedure_state_label",
-                "procedure_type.procedure_type": "pcpg_process.procedure_type",
-                "procedure_type.procedure_type_label": "pcpg_process.procedure_type_label",
-                "procedure_contract.procedure_contract": "pcpg_process.procedure_contract",
-                "procedure_contract.procedure_contract_label": "pcpg_process.procedure_contract_label"
-            }
-        }
-        
-        
-        
     ]
 }
