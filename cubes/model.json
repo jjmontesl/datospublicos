@@ -1,191 +1,7 @@
 {
     "cubes": [
         {
-            "details": [
-                "url_pdf", 
-                "page_start", 
-                "page_end"
-            ], 
-            "dimensions": [
-                "date_published", 
-                "department", 
-                "imageletter", 
-                "section", 
-                "journal_num", 
-                "hasanalysis"
-            ], 
-            "joins": [
-                {
-                    "alias": "date_published", 
-                    "detail": "date_published.id", 
-                    "master": "boe_article.date_published_id"
-                }, 
-                {
-                    "alias": "department", 
-                    "detail": "department.id", 
-                    "master": "boe_article.department_id"
-                }, 
-                {
-                    "alias": "imageletter", 
-                    "detail": "imageletter.id", 
-                    "master": "boe_article.imageletter_id"
-                }, 
-                {
-                    "alias": "section", 
-                    "detail": "section.id", 
-                    "master": "boe_article.section_id"
-                }
-            ], 
-            "key": "id", 
-            "label": "boe_article", 
-            "mappings": {
-                "date_published.day": "date_published.day", 
-                "date_published.id": "date_published.id", 
-                "date_published.month": "date_published.month", 
-                "date_published.quarter": "date_published.quarter", 
-                "date_published.week": "date_published.week", 
-                "date_published.year": "date_published.year", 
-                "department.department": "department.department", 
-                "department.id": "department.id", 
-                "hasanalysis": "boe_article.hasanalysis", 
-                "imageletter.id": "imageletter.id", 
-                "imageletter.image_letter": "imageletter.image_letter", 
-                "journal_num": "boe_article.journal_num", 
-                "section.id": "section.id", 
-                "section.section": "section.section"
-            }, 
-            "measures": [
-                {
-                    "aggregations": [
-                        "sum", 
-                        "avg", 
-                        "max", 
-                        "min"
-                    ], 
-                    "name": "page_count"
-                }
-            ], 
-            "name": "boe_article"
-        }, 
-        {
-            "details": [
-                "notes"
-            ], 
-            "dimensions": [
-                "modality", 
-                "type", 
-                "tramitation", 
-                "procedure", 
-                "concept", 
-                "geographic_scope", 
-                "date_published", 
-                "department", 
-                "imageletter", 
-                "section", 
-                "journal_num", 
-                "hasanalysis"
-            ], 
-            "joins": [
-                {
-                    "alias": "modality", 
-                    "detail": "modality.id", 
-                    "master": "boe_analysis.modality_id"
-                }, 
-                {
-                    "alias": "type", 
-                    "detail": "type.id", 
-                    "master": "boe_analysis.type_id"
-                }, 
-                {
-                    "alias": "tramitation", 
-                    "detail": "tramitation.id", 
-                    "master": "boe_analysis.tramitation_id"
-                }, 
-                {
-                    "alias": "procedure", 
-                    "detail": "procedure.id", 
-                    "master": "boe_analysis.procedure_id"
-                }, 
-                {
-                    "alias": "concept", 
-                    "detail": "concept.id", 
-                    "master": "boe_analysis.concept_id"
-                }, 
-                {
-                    "alias": "geographic_scope", 
-                    "detail": "geographic_scope.id", 
-                    "master": "boe_analysis.geographic_scope_id"
-                }, 
-                {
-                    "alias": "boe_article", 
-                    "detail": "boe_article.id", 
-                    "master": "boe_analysis.boe_article_id"
-                }, 
-                {
-                    "alias": "date_published", 
-                    "detail": "date_published.id", 
-                    "master": "boe_article.date_published_id"
-                }, 
-                {
-                    "alias": "department", 
-                    "detail": "department.id", 
-                    "master": "boe_article.department_id"
-                }, 
-                {
-                    "alias": "imageletter", 
-                    "detail": "imageletter.id", 
-                    "master": "boe_article.imageletter_id"
-                }, 
-                {
-                    "alias": "section", 
-                    "detail": "section.id", 
-                    "master": "boe_article.section_id"
-                }
-            ], 
-            "key": "id", 
-            "label": "boe_analysis", 
-            "mappings": {
-                "concept.concept": "concept.concept", 
-                "concept.id": "concept.id", 
-                "date_published.day": "date_published.day", 
-                "date_published.id": "date_published.id", 
-                "date_published.month": "date_published.month", 
-                "date_published.quarter": "date_published.quarter", 
-                "date_published.week": "date_published.week", 
-                "date_published.year": "date_published.year", 
-                "department.department": "department.department", 
-                "department.id": "department.id", 
-                "geographic_scope.geographic_scope": "geographic_scope.geographic_scope", 
-                "geographic_scope.id": "geographic_scope.id", 
-                "hasanalysis": "boe_article.hasanalysis", 
-                "imageletter.id": "imageletter.id", 
-                "imageletter.image_letter": "imageletter.image_letter", 
-                "journal_num": "boe_article.journal_num", 
-                "modality.id": "modality.id", 
-                "modality.modality": "modality.modality", 
-                "procedure.id": "procedure.id", 
-                "procedure.procedure": "procedure.procedure", 
-                "section.id": "section.id", 
-                "section.section": "section.section", 
-                "tramitation.id": "tramitation.id", 
-                "tramitation.tramitation": "tramitation.tramitation", 
-                "type.id": "type.id", 
-                "type.type": "type.type"
-            }, 
-            "measures": [
-                {
-                    "aggregations": [
-                        "sum", 
-                        "avg", 
-                        "max", 
-                        "min"
-                    ], 
-                    "name": "cost"
-                }
-            ], 
-            "name": "boe_analysis"
-        }, 
-        {
+            "_comment": "Generated by CubETL", 
             "details": [], 
             "dimensions": [
                 "year", 
@@ -195,17 +11,17 @@
             "joins": [
                 {
                     "alias": "autonomy", 
-                    "detail": "autonomy.id", 
+                    "detail": "ine_autonomy.id", 
                     "master": "ine_census.autonomy_id"
                 }
             ], 
             "key": "id", 
-            "label": "ine_census", 
+            "label": "INE / Censo", 
             "mappings": {
                 "autonomy.id": "autonomy.id", 
                 "autonomy.name": "autonomy.name", 
-                "genre": "ine_census.genre", 
-                "year": "ine_census.year"
+                "ine_census.genre": "ine_census.genre", 
+                "ine_census.year": "ine_census.year"
             }, 
             "measures": [
                 {
@@ -221,6 +37,7 @@
             "name": "ine_census"
         }, 
         {
+            "_comment": "Generated by CubETL", 
             "details": [], 
             "dimensions": [
                 "year", 
@@ -230,23 +47,23 @@
             "joins": [
                 {
                     "alias": "autonomy", 
-                    "detail": "autonomy.id", 
+                    "detail": "ine_autonomy.id", 
                     "master": "dvmi_budget_autonomy.autonomy_id"
                 }, 
                 {
                     "alias": "function", 
-                    "detail": "function.id", 
+                    "detail": "dvmi_function.id", 
                     "master": "dvmi_budget_autonomy.function_id"
                 }
             ], 
             "key": "id", 
-            "label": "dvmi_budget_autonomy", 
+            "label": "DVMI / Presupuestos Auton\u00f3micos", 
             "mappings": {
                 "autonomy.id": "autonomy.id", 
                 "autonomy.name": "autonomy.name", 
+                "dvmi_budget_autonomy.year": "dvmi_budget_autonomy.year", 
                 "function.function": "function.function", 
-                "function.id": "function.id", 
-                "year": "dvmi_budget_autonomy.year"
+                "function.id": "function.id"
             }, 
             "measures": [
                 {
@@ -278,11 +95,545 @@
                 }
             ], 
             "name": "dvmi_budget_autonomy"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "details": [], 
+            "dimensions": [
+                "year_budget", 
+                "organismsection", 
+                "program", 
+                "concept"
+            ], 
+            "joins": [
+                {
+                    "alias": "organismsection", 
+                    "detail": "pge_organismsection.id", 
+                    "master": "dvmi_budget_general.organismsection_id"
+                }, 
+                {
+                    "alias": "program", 
+                    "detail": "pge_program.code", 
+                    "master": "dvmi_budget_general.program_id"
+                }, 
+                {
+                    "alias": "concept_l1", 
+                    "detail": "pge_concept_l1_section.code", 
+                    "master": "dvmi_budget_general.concept_l1_id"
+                }, 
+                {
+                    "alias": "concept_l2", 
+                    "detail": "pge_concept_l2_article.code", 
+                    "master": "dvmi_budget_general.concept_l2_id"
+                }, 
+                {
+                    "alias": "concept_l3", 
+                    "detail": "pge_concept_l3_concept.code", 
+                    "master": "dvmi_budget_general.concept_l3_id"
+                }, 
+                {
+                    "alias": "concept_l4", 
+                    "detail": "pge_concept_l4_subconcept.code", 
+                    "master": "dvmi_budget_general.concept_l4_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "DVMI / Presupuestos Generales", 
+            "mappings": {
+                "concept.l1_code": "concept_l1.code", 
+                "concept.l1_name": "concept_l1.name", 
+                "concept.l2_code": "concept_l2.code", 
+                "concept.l2_name": "concept_l2.name", 
+                "concept.l3_code": "concept_l3.code", 
+                "concept.l3_name": "concept_l3.name", 
+                "concept.l4_code": "concept_l4.code", 
+                "concept.l4_name": "concept_l4.name", 
+                "dvmi_budget_general.year_budget": "dvmi_budget_general.year_budget", 
+                "organismsection.id": "organismsection.id", 
+                "organismsection.organism_code": "organismsection.organism_code", 
+                "organismsection.organism_name": "organismsection.organism_name", 
+                "organismsection.section_code": "organismsection.section_code", 
+                "organismsection.section_name": "organismsection.section_name", 
+                "program.program": "program.program", 
+                "program.program_code": "program.code"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "expense_total"
+                }, 
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "expense_per_person"
+                }
+            ], 
+            "name": "dvmi_budget_general"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "details": [
+                "url_pdf", 
+                "page_start", 
+                "page_end"
+            ], 
+            "dimensions": [
+                "date_published", 
+                "department", 
+                "imageletter", 
+                "section", 
+                "journal_num", 
+                "hasanalysis"
+            ], 
+            "joins": [
+                {
+                    "alias": "date_published", 
+                    "detail": "date.id", 
+                    "master": "boe_article.date_published_id"
+                }, 
+                {
+                    "alias": "department", 
+                    "detail": "boe_department.id", 
+                    "master": "boe_article.department_id"
+                }, 
+                {
+                    "alias": "imageletter", 
+                    "detail": "boe_imageletter.id", 
+                    "master": "boe_article.imageletter_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "BOE / Art\u00edculos", 
+            "mappings": {
+                "boe_article.hasanalysis": "boe_article.hasanalysis", 
+                "boe_article.journal_num": "boe_article.journal_num", 
+                "boe_article.section": "boe_article.section", 
+                "date_published.day": "date_published.day", 
+                "date_published.dow": "date_published.dow", 
+                "date_published.id": "date_published.id", 
+                "date_published.month": "date_published.month", 
+                "date_published.quarter": "date_published.quarter", 
+                "date_published.week": "date_published.week", 
+                "date_published.year": "date_published.year", 
+                "department.department": "department.department", 
+                "department.id": "department.id", 
+                "imageletter.id": "imageletter.id", 
+                "imageletter.image_letter": "imageletter.image_letter"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "page_count"
+                }
+            ], 
+            "name": "boe_article"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "details": [
+                "notes"
+            ], 
+            "dimensions": [
+                "boe_article", 
+                "modality", 
+                "type", 
+                "tramitation", 
+                "procedure", 
+                "boe_concept", 
+                "geographic_scope"
+            ], 
+            "joins": [
+                {
+                    "alias": "boe_article", 
+                    "detail": "boe_article.boe_article_id", 
+                    "master": "boe_analysis.boe_article_id"
+                }, 
+                {
+                    "alias": "date_published", 
+                    "detail": "date.id", 
+                    "master": "boe_article.date_published_id"
+                }, 
+                {
+                    "alias": "department", 
+                    "detail": "boe_department.id", 
+                    "master": "boe_article.department_id"
+                }, 
+                {
+                    "alias": "imageletter", 
+                    "detail": "boe_imageletter.id", 
+                    "master": "boe_article.imageletter_id"
+                }, 
+                {
+                    "alias": "modality", 
+                    "detail": "boe_modality.id", 
+                    "master": "boe_analysis.modality_id"
+                }, 
+                {
+                    "alias": "type", 
+                    "detail": "boe_type.id", 
+                    "master": "boe_analysis.type_id"
+                }, 
+                {
+                    "alias": "tramitation", 
+                    "detail": "boe_tramitation.id", 
+                    "master": "boe_analysis.tramitation_id"
+                }, 
+                {
+                    "alias": "procedure", 
+                    "detail": "boe_procedure.id", 
+                    "master": "boe_analysis.procedure_id"
+                }, 
+                {
+                    "alias": "boe_concept", 
+                    "detail": "boe_concept.id", 
+                    "master": "boe_analysis.boe_concept_id"
+                }, 
+                {
+                    "alias": "geographic_scope", 
+                    "detail": "boe_geographic_scope.id", 
+                    "master": "boe_analysis.geographic_scope_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "BOE / An\u00e1lisis", 
+            "mappings": {
+                "boe_article.hasanalysis": "boe_article.hasanalysis", 
+                "boe_article.journal_num": "boe_article.journal_num", 
+                "boe_article.section": "boe_article.section", 
+                "boe_concept.concept": "boe_concept.concept", 
+                "boe_concept.id": "boe_concept.id", 
+                "date_published.day": "date_published.day", 
+                "date_published.dow": "date_published.dow", 
+                "date_published.id": "date_published.id", 
+                "date_published.month": "date_published.month", 
+                "date_published.quarter": "date_published.quarter", 
+                "date_published.week": "date_published.week", 
+                "date_published.year": "date_published.year", 
+                "department.department": "department.department", 
+                "department.id": "department.id", 
+                "geographic_scope.geographic_scope": "geographic_scope.geographic_scope", 
+                "geographic_scope.id": "geographic_scope.id", 
+                "imageletter.id": "imageletter.id", 
+                "imageletter.image_letter": "imageletter.image_letter", 
+                "modality.id": "modality.id", 
+                "modality.modality": "modality.modality", 
+                "procedure.id": "procedure.id", 
+                "procedure.procedure": "procedure.procedure", 
+                "tramitation.id": "tramitation.id", 
+                "tramitation.tramitation": "tramitation.tramitation", 
+                "type.id": "type.id", 
+                "type.type": "type.type"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "cost"
+                }
+            ], 
+            "name": "boe_analysis"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "details": [
+                "purpose"
+            ], 
+            "dimensions": [
+                "date_provisional", 
+                "date_final", 
+                "company", 
+                "type", 
+                "contract", 
+                "state"
+            ], 
+            "joins": [
+                {
+                    "alias": "date_provisional", 
+                    "detail": "date.id", 
+                    "master": "cg_process.date_provisional_id"
+                }, 
+                {
+                    "alias": "date_final", 
+                    "detail": "date.id", 
+                    "master": "cg_process.date_final_id"
+                }, 
+                {
+                    "alias": "company", 
+                    "detail": "cg_company.id", 
+                    "master": "cg_process.company_id"
+                }, 
+                {
+                    "alias": "type", 
+                    "detail": "cg_type.id", 
+                    "master": "cg_process.type_id"
+                }, 
+                {
+                    "alias": "contract", 
+                    "detail": "cg_contract.id", 
+                    "master": "cg_process.contract_id"
+                }, 
+                {
+                    "alias": "state", 
+                    "detail": "cg_state.id", 
+                    "master": "cg_process.state_id"
+                }
+            ], 
+            "key": "id", 
+            "label": "Contratos Galicia / Procedimientos", 
+            "mappings": {
+                "company.company": "company.company", 
+                "company.id": "company.id", 
+                "contract.contract": "contract.contract", 
+                "contract.id": "contract.id", 
+                "date_final.day": "date_final.day", 
+                "date_final.dow": "date_final.dow", 
+                "date_final.id": "date_final.id", 
+                "date_final.month": "date_final.month", 
+                "date_final.quarter": "date_final.quarter", 
+                "date_final.week": "date_final.week", 
+                "date_final.year": "date_final.year", 
+                "date_provisional.day": "date_provisional.day", 
+                "date_provisional.dow": "date_provisional.dow", 
+                "date_provisional.id": "date_provisional.id", 
+                "date_provisional.month": "date_provisional.month", 
+                "date_provisional.quarter": "date_provisional.quarter", 
+                "date_provisional.week": "date_provisional.week", 
+                "date_provisional.year": "date_provisional.year", 
+                "state.id": "state.id", 
+                "state.state": "state.state", 
+                "type.id": "type.id", 
+                "type.type": "type.type"
+            }, 
+            "measures": [
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "procedure_cost"
+                }, 
+                {
+                    "aggregations": [
+                        "sum", 
+                        "avg", 
+                        "max", 
+                        "min"
+                    ], 
+                    "name": "contractor_cost"
+                }
+            ], 
+            "name": "cg_process"
         }
     ], 
     "dimensions": [
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
+            "label": "Year", 
+            "levels": [
+                {
+                    "attributes": [
+                        "year"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "year"
+                    }, 
+                    "key": "year", 
+                    "label": "Year", 
+                    "label_attribute": "year", 
+                    "name": "year"
+                }
+            ], 
+            "name": "year"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "G\u00e9nero", 
+            "levels": [
+                {
+                    "attributes": [
+                        "genre"
+                    ], 
+                    "key": "genre", 
+                    "label": "G\u00e9nero", 
+                    "label_attribute": "genre", 
+                    "name": "genre"
+                }
+            ], 
+            "name": "genre"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Comunidad Aut\u00f3noma", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "name"
+                    ], 
+                    "key": "id", 
+                    "label": "Comunidad Aut\u00f3noma", 
+                    "label_attribute": "name", 
+                    "name": "autonomy"
+                }
+            ], 
+            "name": "autonomy"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Funci\u00f3n", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "function"
+                    ], 
+                    "key": "id", 
+                    "label": "Funci\u00f3n", 
+                    "label_attribute": "function", 
+                    "name": "function"
+                }
+            ], 
+            "name": "function"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "A\u00f1o Presupuesto", 
+            "levels": [
+                {
+                    "attributes": [
+                        "year_budget"
+                    ], 
+                    "key": "year_budget", 
+                    "label": "A\u00f1o Presupuesto", 
+                    "label_attribute": "year_budget", 
+                    "name": "year_budget"
+                }
+            ], 
+            "name": "year_budget"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "hierarchies": [
+                {
+                    "label": "Organismo", 
+                    "levels": [
+                        "organism", 
+                        "section"
+                    ], 
+                    "name": "organism"
+                }
+            ], 
+            "label": "Organismo", 
+            "levels": [
+                {
+                    "attributes": [
+                        "organism_code", 
+                        "organism_name"
+                    ], 
+                    "key": "organism_code", 
+                    "label": "Organismo", 
+                    "label_attribute": "organism_name", 
+                    "name": "organism"
+                }, 
+                {
+                    "attributes": [
+                        "section_code", 
+                        "section_name"
+                    ], 
+                    "key": "section_code", 
+                    "label": "Secci\u00f3n", 
+                    "label_attribute": "section_name", 
+                    "name": "section"
+                }
+            ], 
+            "name": "organismsection"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Programa", 
+            "levels": [
+                {
+                    "attributes": [
+                        "program_code", 
+                        "program"
+                    ], 
+                    "key": "program_code", 
+                    "label": "Programa", 
+                    "label_attribute": "program", 
+                    "name": "program"
+                }
+            ], 
+            "name": "program"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Concept", 
+            "levels": [
+                {
+                    "attributes": [
+                        "l1_code", 
+                        "l1_name"
+                    ], 
+                    "key": "l1_code", 
+                    "label": "Cap\u00edtulo", 
+                    "label_attribute": "l1_name", 
+                    "name": "concept_l1"
+                }, 
+                {
+                    "attributes": [
+                        "l2_code", 
+                        "l2_name"
+                    ], 
+                    "key": "l2_code", 
+                    "label": "Art\u00edculo", 
+                    "label_attribute": "l2_name", 
+                    "name": "concept_l2"
+                }, 
+                {
+                    "attributes": [
+                        "l3_code", 
+                        "l3_name"
+                    ], 
+                    "key": "l3_code", 
+                    "label": "Concepto", 
+                    "label_attribute": "l3_name", 
+                    "name": "concept_l3"
+                }, 
+                {
+                    "attributes": [
+                        "l4_code", 
+                        "l4_name"
+                    ], 
+                    "key": "l4_code", 
+                    "label": "Subconcepto", 
+                    "label_attribute": "l4_name", 
+                    "name": "concept_l4"
+                }
+            ], 
+            "name": "concept"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
             "hierarchies": [
                 {
                     "label": "Daily", 
@@ -373,7 +724,7 @@
             "name": "date_published"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Departamento", 
             "levels": [
                 {
@@ -390,7 +741,7 @@
             "name": "department"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Letra Imagen", 
             "levels": [
                 {
@@ -399,23 +750,22 @@
                         "image_letter"
                     ], 
                     "key": "id", 
-                    "label": "image_letter", 
+                    "label": "Letra Imagen", 
                     "label_attribute": "image_letter", 
-                    "name": "image_letter"
+                    "name": "imageletter"
                 }
             ], 
             "name": "imageletter"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Seccion", 
             "levels": [
                 {
                     "attributes": [
-                        "id", 
                         "section"
                     ], 
-                    "key": "id", 
+                    "key": "section", 
                     "label": "Seccion", 
                     "label_attribute": "section", 
                     "name": "section"
@@ -424,7 +774,7 @@
             "name": "section"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Diario", 
             "levels": [
                 {
@@ -440,7 +790,7 @@
             "name": "journal_num"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "An\u00e1lisis", 
             "levels": [
                 {
@@ -456,7 +806,33 @@
             "name": "hasanalysis"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
+            "label": "Art\u00edculo BOE", 
+            "levels": [
+                {
+                    "attributes": [
+                        "boe_article", 
+                        "date_published", 
+                        "department", 
+                        "imageletter", 
+                        "section", 
+                        "journal_num", 
+                        "hasanalysis", 
+                        "page_count", 
+                        "url_pdf", 
+                        "page_start", 
+                        "page_end"
+                    ], 
+                    "key": "boe_article", 
+                    "label": "Art\u00edculo BOE", 
+                    "label_attribute": "date_published", 
+                    "name": "boe_article"
+                }
+            ], 
+            "name": "boe_article"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
             "label": "Modalidad", 
             "levels": [
                 {
@@ -473,7 +849,7 @@
             "name": "modality"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Tipo", 
             "levels": [
                 {
@@ -490,7 +866,7 @@
             "name": "type"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Tramitaci\u00f3n", 
             "levels": [
                 {
@@ -507,7 +883,7 @@
             "name": "tramitation"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Procedimiento", 
             "levels": [
                 {
@@ -524,7 +900,7 @@
             "name": "procedure"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "Concepto", 
             "levels": [
                 {
@@ -535,13 +911,13 @@
                     "key": "id", 
                     "label": "Concepto", 
                     "label_attribute": "concept", 
-                    "name": "concept"
+                    "name": "boe_concept"
                 }
             ], 
-            "name": "concept"
+            "name": "boe_concept"
         }, 
         {
-            "comment": "Generated by CubETL", 
+            "_comment": "Generated by CubETL", 
             "label": "\u00c1mbito Geogr\u00e1fico", 
             "levels": [
                 {
@@ -558,76 +934,237 @@
             "name": "geographic_scope"
         }, 
         {
-            "comment": "Generated by CubETL", 
-            "label": "Art\u00edculo BOE", 
-            "levels": [], 
-            "name": "boe_article"
-        }, 
-        {
-            "comment": "Generated by CubETL", 
-            "label": "A\u00f1o", 
+            "_comment": "Generated by CubETL", 
+            "hierarchies": [
+                {
+                    "label": "Daily", 
+                    "levels": [
+                        "year", 
+                        "quarter", 
+                        "month", 
+                        "day"
+                    ], 
+                    "name": "daily"
+                }, 
+                {
+                    "label": "Weekly", 
+                    "levels": [
+                        "year", 
+                        "week"
+                    ], 
+                    "name": "weekly"
+                }
+            ], 
+            "info": {
+                "cv-datefilter": true, 
+                "cv-datefilter-hierarchy": "daily"
+            }, 
+            "label": "Fecha Provisional", 
             "levels": [
                 {
                     "attributes": [
                         "year"
                     ], 
+                    "info": {
+                        "cv-datefilter-field": "year"
+                    }, 
                     "key": "year", 
-                    "label": "A\u00f1o", 
+                    "label": "Year", 
                     "label_attribute": "year", 
                     "name": "year"
+                }, 
+                {
+                    "attributes": [
+                        "quarter"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "quarter"
+                    }, 
+                    "key": "quarter", 
+                    "label": "Quarter", 
+                    "label_attribute": "quarter", 
+                    "name": "quarter"
+                }, 
+                {
+                    "attributes": [
+                        "month"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "month"
+                    }, 
+                    "key": "month", 
+                    "label": "Month", 
+                    "label_attribute": "month", 
+                    "name": "month"
+                }, 
+                {
+                    "attributes": [
+                        "week"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "week"
+                    }, 
+                    "key": "week", 
+                    "label": "Week", 
+                    "label_attribute": "week", 
+                    "name": "week"
+                }, 
+                {
+                    "attributes": [
+                        "day"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "day"
+                    }, 
+                    "key": "day", 
+                    "label": "Day", 
+                    "label_attribute": "day", 
+                    "name": "day"
                 }
             ], 
-            "name": "year"
+            "name": "date_provisional"
         }, 
         {
-            "comment": "Generated by CubETL", 
-            "label": "Comunidad Aut\u00f3noma", 
+            "_comment": "Generated by CubETL", 
+            "hierarchies": [
+                {
+                    "label": "Daily", 
+                    "levels": [
+                        "year", 
+                        "quarter", 
+                        "month", 
+                        "day"
+                    ], 
+                    "name": "daily"
+                }, 
+                {
+                    "label": "Weekly", 
+                    "levels": [
+                        "year", 
+                        "week"
+                    ], 
+                    "name": "weekly"
+                }
+            ], 
+            "info": {
+                "cv-datefilter": true, 
+                "cv-datefilter-hierarchy": "daily"
+            }, 
+            "label": "Fecha Final", 
+            "levels": [
+                {
+                    "attributes": [
+                        "year"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "year"
+                    }, 
+                    "key": "year", 
+                    "label": "Year", 
+                    "label_attribute": "year", 
+                    "name": "year"
+                }, 
+                {
+                    "attributes": [
+                        "quarter"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "quarter"
+                    }, 
+                    "key": "quarter", 
+                    "label": "Quarter", 
+                    "label_attribute": "quarter", 
+                    "name": "quarter"
+                }, 
+                {
+                    "attributes": [
+                        "month"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "month"
+                    }, 
+                    "key": "month", 
+                    "label": "Month", 
+                    "label_attribute": "month", 
+                    "name": "month"
+                }, 
+                {
+                    "attributes": [
+                        "week"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "week"
+                    }, 
+                    "key": "week", 
+                    "label": "Week", 
+                    "label_attribute": "week", 
+                    "name": "week"
+                }, 
+                {
+                    "attributes": [
+                        "day"
+                    ], 
+                    "info": {
+                        "cv-datefilter-field": "day"
+                    }, 
+                    "key": "day", 
+                    "label": "Day", 
+                    "label_attribute": "day", 
+                    "name": "day"
+                }
+            ], 
+            "name": "date_final"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Empresa", 
             "levels": [
                 {
                     "attributes": [
                         "id", 
-                        "name"
+                        "company"
                     ], 
                     "key": "id", 
-                    "label": "name", 
-                    "label_attribute": "name", 
-                    "name": "name"
+                    "label": "Empresa", 
+                    "label_attribute": "company", 
+                    "name": "company"
                 }
             ], 
-            "name": "autonomy"
+            "name": "company"
         }, 
         {
-            "comment": "Generated by CubETL", 
-            "label": "G\u00e9nero", 
-            "levels": [
-                {
-                    "attributes": [
-                        "genre"
-                    ], 
-                    "key": "genre", 
-                    "label": "G\u00e9nero", 
-                    "label_attribute": "genre", 
-                    "name": "genre"
-                }
-            ], 
-            "name": "genre"
-        }, 
-        {
-            "comment": "Generated by CubETL", 
-            "label": "Funci\u00f3n", 
+            "_comment": "Generated by CubETL", 
+            "label": "Contrato", 
             "levels": [
                 {
                     "attributes": [
                         "id", 
-                        "function"
+                        "contract"
                     ], 
                     "key": "id", 
-                    "label": "Funci\u00f3n", 
-                    "label_attribute": "function", 
-                    "name": "function"
+                    "label": "Contrato", 
+                    "label_attribute": "contract", 
+                    "name": "contract"
                 }
             ], 
-            "name": "function"
+            "name": "contract"
+        }, 
+        {
+            "_comment": "Generated by CubETL", 
+            "label": "Estado", 
+            "levels": [
+                {
+                    "attributes": [
+                        "id", 
+                        "state"
+                    ], 
+                    "key": "id", 
+                    "label": "Estado", 
+                    "label_attribute": "state", 
+                    "name": "state"
+                }
+            ], 
+            "name": "state"
         }
     ]
 }

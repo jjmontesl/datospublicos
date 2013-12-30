@@ -5,109 +5,15 @@
                http://springpython.webfactional.com/schema/context/spring-python-context-1.1.xsd">
 
 
-    <!-- 
-    <object id="table-boe-article" class="cubetl.sql.SQLTable" scope="singleton">
-        
-        <property name="table" value="table_boe_article" />
-        <property name="connection" ref="connection-sql-target" />
-        
-        <property name="columns" >
-            <list>
-                <dict>
-                    <entry><key><value>name</value></key><value>id</value></entry>
-                    <entry><key><value>type</value></key><value>String</value></entry>
-                    <entry><key><value>pk</value></key><value>True</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>url_pdf</value></entry>
-                    <entry><key><value>type</value></key><value>String</value></entry>
-                </dict>
-            </list>
-        </property>
-        
+    <object id="dp.dim.boe.datepublished" class="cubetl.olap.AliasDimension" >
+        <property name="name" value="date_published" />
+        <property name="label" value="Fecha Publicación" />
+        <property name="dimension" ref="cubetl.dim.datetime.date" />
     </object>
-     -->
-
-     <object id="dim-datepublished" class="cubetl.olap.Dimension" scope="singleton">
-     <!--  TODO: Inherit / relate to date -->
-
-        <property name="name" value="date_published" ></property>
-        <property name="label" value="Fecha Publicación" ></property>
-
-        <property name="role" value="date"></property>
-       
-        <property name="hierarchies">
-            <list>
-	            <dict>
-	                <entry><key><value>name</value></key><value>daily</value></entry>
-	                <entry><key><value>label</value></key><value>Daily</value></entry>
-	                <entry><key><value>levels</value></key><value>
-	                   <list>
-	                       <value>year</value>
-	                       <value>quarter</value>
-	                       <value>month</value>
-	                       <value>day</value>
-	                   </list>
-	                </value></entry>
-	            </dict>
-	            <dict>
-	                <entry><key><value>name</value></key><value>weekly</value></entry>
-	                <entry><key><value>label</value></key><value>Weekly</value></entry>
-	                <entry><key><value>levels</value></key><value>
-	                   <list>
-	                       <value>year</value>
-	                       <value>week</value>
-	                   </list>
-	                </value></entry>
-	            </dict>
-            </list>
-        </property> 
-
-        <property name="attributes">
-            <list>
-                <dict>
-                    <entry><key><value>name</value></key><value>year</value></entry>
-                    <entry><key><value>label</value></key><value>Year</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
-                    <entry><key><value>role</value></key><value>year</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>quarter</value></entry>
-                    <entry><key><value>label</value></key><value>Quarter</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
-                    <entry><key><value>role</value></key><value>quarter</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>month</value></entry>
-                    <entry><key><value>label</value></key><value>Month</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
-                    <entry><key><value>role</value></key><value>month</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>week</value></entry>
-                    <entry><key><value>label</value></key><value>Week</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
-                    <entry><key><value>role</value></key><value>week</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>day</value></entry>
-                    <entry><key><value>label</value></key><value>Day</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
-                    <entry><key><value>role</value></key><value>day</value></entry>
-                </dict>
-            </list>
-        </property>    
-        
-       
-            
-    </object>
-
-    
-    <object id="dim-department" class="cubetl.olap.Dimension" scope="singleton">
-    
+     
+    <object id="dp.dim.boe.department" class="cubetl.olap.Dimension" >
         <property name="name" value="department" ></property>
         <property name="label" value="Departamento" ></property>
-        
         <property name="attributes">
             <list>
                 <dict>
@@ -116,14 +22,11 @@
                 </dict>
             </list>
         </property>
-                
     </object>
     
-    <object id="dim-imageletter" class="cubetl.olap.Dimension" scope="singleton">
-    
+    <object id="dp.dim.boe.imageletter" class="cubetl.olap.Dimension" >
         <property name="name" value="imageletter" ></property>
         <property name="label" value="Letra Imagen" ></property>
-        
         <property name="attributes">
             <list>
                 <dict>
@@ -132,30 +35,24 @@
                 </dict>
             </list>
         </property>
-                
     </object>
     
-    <object id="dim-section" class="cubetl.olap.Dimension" scope="singleton">
-    
+    <object id="dp.dim.boe.section" class="cubetl.olap.Dimension">
         <property name="name" value="section" ></property>
         <property name="label" value="Seccion" ></property>
-        
         <property name="attributes">
             <list>
                 <dict>
                     <entry><key><value>name</value></key><value>section</value></entry>
-                    <entry><key><value>type</value></key><value>Integer</value></entry>
+                    <entry><key><value>type</value></key><value>String</value></entry>
                 </dict>
             </list>
         </property>
-                
     </object>        
 
-    <object id="dim-journal_num" class="cubetl.olap.Dimension" scope="singleton">
-    
+    <object id="dp.dim.boe.journal_num" class="cubetl.olap.Dimension">
         <property name="name" value="journal_num" ></property>
         <property name="label" value="Diario" ></property>
-        
         <property name="attributes">
             <list>
                 <dict>
@@ -164,14 +61,11 @@
                 </dict>
             </list>
         </property>
-                
     </object>
 
-    <object id="dim-hasanalysis" class="cubetl.olap.Dimension" scope="singleton">
-    
+    <object id="dp.dim.boe.hasanalysis" class="cubetl.olap.Dimension">
         <property name="name" value="hasanalysis" ></property>
         <property name="label" value="Análisis" ></property>
-        
         <property name="attributes">
             <list>
                 <dict>
@@ -180,22 +74,21 @@
                 </dict>
             </list>
         </property>
-                
     </object>
     
-    <object id="fact-boe-article" class="cubetl.olap.Fact" scope="singleton">
-        
+    <object id="dp.fact.boe.article" class="cubetl.olap.Fact" >
+    
         <property name="name" value="boe_article" />
         <property name="label" value="BOE / Artículos" />
         
         <property name="dimensions" >
             <list>
-                <ref object="dim-datepublished" />
-                <ref object="dim-department" />
-                <ref object="dim-imageletter" />
-                <ref object="dim-section" />
-                <ref object="dim-journal_num" />
-                <ref object="dim-hasanalysis" />
+                <ref object="dp.dim.boe.datepublished" />
+                <ref object="dp.dim.boe.department" />
+                <ref object="dp.dim.boe.imageletter" />
+                <ref object="dp.dim.boe.section" />
+                <ref object="dp.dim.boe.journal_num" />
+                <ref object="dp.dim.boe.hasanalysis" />
             </list>
         </property>
         <property name="measures" >
@@ -224,52 +117,34 @@
         </property>        
     </object>    
     
-    <object id="olap-sql-mapper-boe" class="cubetl.olap.OlapMapper" scope="singleton">
+    <object id="dp.olapmapper.boe.article" class="cubetl.olap.OlapMapper" scope="singleton">
     
         <property name="mappers">
             <list>
-                <object class="cubetl.olap.sql.SQLDimensionMapper" >
-			        <property name="dimension" ref="dim-datepublished" />
-			        <property name="table" value="date_published" />
-			        <property name="connection" ref="connection-sql-target" />
-			        <property name="mappings">
-			            <list>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>id</value></entry>
-			                    <!-- <entry><key><value>column</value></key><value>date_published_id</value></entry>  -->
-			                    <entry><key><value>value</value></key><value>${ text.slugu(m["date_published"].strftime('%Y-%m-%d')) }</value></entry>
-			                    <entry><key><value>pk</value></key><value>True</value></entry>
-			                    <entry><key><value>type</value></key><value>String</value></entry>
-			                    
-			                </dict>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>year</value></entry>
-			                    <entry><key><value>value</value></key><value>${ m["date_published"].year }</value></entry>
-			                </dict>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>quarter</value></entry>
-			                    <entry><key><value>value</value></key><value>${ int(m["date_published"].month / 4) + 1 }</value></entry>
-			                </dict>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>month</value></entry>
-			                    <entry><key><value>value</value></key><value>${ m["date_published"].month }</value></entry>
-			                </dict>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>week</value></entry>
-			                    <entry><key><value>value</value></key><value>${ m["date_published"].strftime('%W') }</value></entry>
-			                </dict>
-			                <dict>
-			                    <entry><key><value>name</value></key><value>day</value></entry>
-			                    <entry><key><value>value</value></key><value>${ m["date_published"].day }</value></entry>
-			                </dict>
-			            </list>
-			        </property>        
-			    </object>
-			    
-                <object class="cubetl.olap.sql.SQLDimensionMapper" >
-                    <property name="dimension" ref="dim-department" />
-                    <property name="table" value="department" />
-                    <property name="connection" ref="connection-sql-target" />
+            
+                <object class="cubetl.olap.sql.CompoundHierarchyDimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.datepublished" />
+                    <property name="table" value="date" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="eval">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>_cubetl_datetime_date</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['date_published'] }</value></entry>
+                            </dict>
+                        </list>                    
+                    </property>
+                    <property name="mappings">
+                        <list>
+                            <ref object="cubetl.mappings.datetime.date" />
+                        </list>
+                    </property>
+                </object>
+            
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.department" />
+                    <property name="table" value="boe_department" />
+                    <property name="connection" ref="dp.sql.connection" />
                     <property name="mappings">
                         <list>id
                             <dict>
@@ -285,10 +160,10 @@
                     </property>        
                 </object>	
                 
-                <object class="cubetl.olap.sql.SQLDimensionMapper" >
-                    <property name="dimension" ref="dim-imageletter" />
-                    <property name="table" value="imageletter" />
-                    <property name="connection" ref="connection-sql-target" />
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.imageletter" />
+                    <property name="table" value="boe_imageletter" />
+                    <property name="connection" ref="dp.sql.connection" />
                     <property name="mappings">
                         <list>
                             <dict>
@@ -301,24 +176,12 @@
                     </property>        
                 </object>    
                 
-                <object class="cubetl.olap.sql.SQLDimensionMapper" >
-                    <property name="dimension" ref="dim-section" />
-                    <property name="table" value="section" />
-                    <property name="connection" ref="connection-sql-target" />
-                    <property name="mappings">
-                        <list>
-                            <dict>
-                                <entry><key><value>name</value></key><value>id</value></entry>
-                                <entry><key><value>value</value></key><value>${ m["section"] }</value></entry>
-                                <entry><key><value>pk</value></key><value>True</value></entry>
-                                <entry><key><value>type</value></key><value>Integer</value></entry>
-                            </dict>
-                        </list>
-                    </property>        
+                <object class="cubetl.olap.sql.EmbeddedDimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.section" />
                 </object> 
                 
-                <object class="cubetl.olap.sql.SQLEmbeddedDimensionMapper" >
-                    <property name="dimension" ref="dim-journal_num" />
+                <object class="cubetl.olap.sql.EmbeddedDimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.journal_num" />
                     <property name="mappings">
                         <list>
                             <dict>
@@ -328,8 +191,8 @@
                     </property>        
                 </object>                 
                 
-                <object class="cubetl.olap.sql.SQLEmbeddedDimensionMapper" >
-                    <property name="dimension" ref="dim-hasanalysis" />
+                <object class="cubetl.olap.sql.EmbeddedDimensionMapper" >
+                    <property name="entity" ref="dp.dim.boe.hasanalysis" />
                     <property name="mappings">
                         <list>
                             <dict>
@@ -339,10 +202,11 @@
                     </property>        
                 </object>                 
                 
-                <object class="cubetl.olap.sql.SQLFactMapper" >
-                    <property name="fact" ref="fact-boe-article" />
+                <object class="cubetl.olap.sql.FactMapper" >
+                    <property name="entity" ref="dp.fact.boe.article" />
                     <property name="table" value="boe_article" />
-                    <property name="connection" ref="connection-sql-target" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="store_mode" value="lookup" />
                     <property name="mappings">
                         <list>
                             <dict>
@@ -359,155 +223,105 @@
         
     </object>
     
-    <object id="node-storefact-boe-article" class="cubetl.olap.StoreFact" >
-        <property name="fact" ref="fact-boe-article" />
-        <property name="mapper" ref="olap-sql-mapper-boe" />
-    </object> 
     
-    <!-- 
-    <object id="node-storerow" class="cubetl.sql.StoreRow" >
-        <property name="table" ref="table-boe-article" />
-    </object>
-     -->     
-    
-    <object id="node-directoryfilereader" class="cubetl.fs.DirectoryFileReader" scope="singleton">
-        <property name="path" value="${ ctx.props['path_data'] }/boe/data/${ ctx.props['boe_year'] }" />
-        <property name="filter_re" value=".*.xml" />
-        <property name="encoding" value="latin-1" />
-    </object>
-    
-    <object id="node-parsexml" class="cubetl.xml.XmlParser" scope="singleton">
-    </object>
-    
-     <object id="node-xpathextract" class="cubetl.xml.XPathExtract" scope="singleton">
-        <property name="mappings">
-            <list>
-                <dict>
-	                <entry><key><value>name</value></key><value>id</value></entry>
-	                <entry><key><value>xpath</value></key><value>string(//documento/metadatos/identificador)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>department</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/departamento)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>page_start</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/pagina_inicial)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>page_end</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/pagina_final)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>page_count</value></entry>
-                    <entry><key><value>eval</value></key><value>${ int(m["page_end"]) - int(m["page_start"]) + 1 }</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>journal_num</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/diario_numero)</value></entry>
-                </dict>                
-                <dict>
-                    <entry><key><value>name</value></key><value>section</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/seccion)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>image_letter</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/letra_imagen)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>url_pdf</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/url_pdf)</value></entry>
-                </dict>
-                <dict>
-                    <entry><key><value>name</value></key><value>date_published</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/fecha_publicacion)</value></entry>
-                </dict>
-                <!-- <dict>
-                    <entry><key><value>name</value></key><value>date_update</value></entry>
-                    <entry><key><value>xpath</value></key><value>string(//documento/@fecha_actualizacion)</value></entry>
-                </dict>  -->
-                <dict>
-                    <entry><key><value>name</value></key><value>hasanalysis</value></entry>
-                    <entry><key><value>eval</value></key><value>${ m['xml'].xpath('string(//analisis/modalidad)').strip() != '' }</value></entry>
-                </dict>
-            </list>
-        </property>  
-    </object>   
-
-     <object id="node-dateextract" class="cubetl.datetime.DateExtract" scope="singleton">
-        <property name="mappings">
-            <list>
-                <dict>
-                    <entry><key><value>name</value></key><value>date_published</value></entry>
-                    <!-- <entry><key><value>source</value></key>date_published<value></value></entry>
-                    <entry><key><value>format</value></key>date_published<value></value></entry>  -->
-                </dict>
-            </list>
-        </property>  
-    </object> 
-    
-    <object id="node-testscript" class="cubetl.script.Script" scope="singleton">
-        <property name="code"><value><![CDATA[
-del(m["xml"])
-del(m["data"])
-m["test-script"] = True
-        ]]></value></property>
-    </object>     
-    
-    <object id="node-sql-transaction" class="cubetl.sql.Transaction" scope="singleton">
-        <property name="connection" ref="connection-sql-target" />
-        <!-- <property name="enabled" value="False" />  -->
-    </object>        
-    
-    <object id="process-boe" class="cubetl.flow.Chain" scope="singleton">
+    <object id="dp.process.boe.articles" class="cubetl.flow.Chain" scope="singleton">
         <property name="steps">
             <list>
 
-                <ref object="node-sql-transaction" />
+                <ref object="dp.sql.transaction" />
                 
-                <ref object="node-directoryfilereader" />
-                <ref object="node-parsexml" />
+                <object class="cubetl.fs.DirectoryFileReader" >
+			        <property name="path" value="${ ctx.props['path_data'] }/boe/data/${ ctx.props['boe_year'] }" />
+			        <property name="filter_re" value=".*.xml" />
+			        <property name="encoding" value="latin-1" />
+			    </object>
+                
+                <object class="cubetl.flow.Filter" scope="singleton">
+                    <property name="condition"><value>${ m['data'].strip() != "" }</value></property>
+                    <property name="message"><value>Filtering empty article: ${ m["filename"] }</value></property>
+                </object>
+                
+                
+                <object class="cubetl.xml.XmlParser" >
+                </object>
 
-                <ref object="node-xpathextract" />
-                <ref object="node-dateextract" />
-
-
-                <ref object="node-storefact-boe-article" />
-
-                <object class="cubetl.flow.Chain" scope="singleton">
-			        <property name="fork" value="True" />
-			        <property name="steps">
+                <object class="cubetl.xml.XPathExtract" >
+			        <property name="eval">
 			            <list>
-			                <ref object="node-filter-analysis" />
-			                <ref object="node-xpathextract-analysis" />
-			                
-			                <!-- 
-                            <object class="cubetl.util.log.Log" scope="singleton">
-			                     <property name="message" value="Geo: ${ m['geographic_scope'] }" />
-			                </object>
-			                 -->
-			                
-			                <ref object="node-storefact-boe-analysis" />
-
-                            <!-- 
-			                <object class="cubetl.util.log.Log" scope="singleton">
-			                     <property name="condition" value="${ m['cost'] != m['cost2'] }" /> 
-			                     <property name="message" value="${ 'Id: %s  New method: %10s  Old method: %10s' % (m['id'], m['cost'], m['cost2'])  }" />
-			                </object> 
-			                 -->
-                            
-                            <!-- <ref object="cubetl-print" />  --> 
-                            
-			                
+			                <dict>
+			                    <entry><key><value>name</value></key><value>id</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/identificador)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>department</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/departamento)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>page_start</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/pagina_inicial)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>page_end</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/pagina_final)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>page_count</value></entry>
+			                    <entry><key><value>value</value></key><value>${ int(m["page_end"]) - int(m["page_start"]) + 1 if (m["page_end"] != "" and m["page_start"] != "") else 0 }</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>journal_num</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/diario_numero)</value></entry>
+			                </dict>                
+			                <dict>
+			                    <entry><key><value>name</value></key><value>section</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/seccion)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>image_letter</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/letra_imagen)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>url_pdf</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/url_pdf)</value></entry>
+			                </dict>
+			                <dict>
+			                    <entry><key><value>name</value></key><value>date_published</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/metadatos/fecha_publicacion)</value></entry>
+			                    <entry><key><value>value</value></key><value>${ text.extract_date(m["date_published"]) }</value></entry>
+			                </dict>
+			                <!-- <dict>
+			                    <entry><key><value>name</value></key><value>date_update</value></entry>
+			                    <entry><key><value>xpath</value></key><value>string(//documento/@fecha_actualizacion)</value></entry>
+			                </dict>  -->
+			                <dict>
+			                    <entry><key><value>name</value></key><value>hasanalysis</value></entry>
+			                    <entry><key><value>value</value></key><value>${ m['xml'].xpath('string(//analisis/modalidad)').strip() != '' }</value></entry>
+			                </dict>
 			            </list>
-			        </property>
-			                
+			        </property>  
+			    </object>   
+                
+
+                <object class="cubetl.olap.Store" >
+			        <property name="entity" ref="dp.fact.boe.article" />
+			        <property name="mapper" ref="dp.olapmapper.boe.article" />
+			    </object> 
+
+                <ref object="dp.process.boe.analysis" />  
+
+			    <object class="cubetl.script.Script">
+			        <property name="code"><value><![CDATA[
+del(m["xml"])
+del(m["data"])
+m["test_script"] = True
+			        ]]></value></property>
 			    </object>  
+
+                <ref object="cubetl.util.print" />
                 
                 <!-- <ref object="node-storerow" />  -->
                 
-                <ref object="node-testscript" />
-                <ref object="node-logperformance" />
+                <ref object="dp.node.logperformance" />
                 
             </list>
         </property>  

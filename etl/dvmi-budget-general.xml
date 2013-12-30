@@ -1,0 +1,672 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects xmlns="http://www.springframework.org/springpython/schema/objects/1.1"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/springpython/schema/objects/1.1
+               http://springpython.webfactional.com/schema/context/spring-python-context-1.1.xsd">
+
+    <object id="dp.dim.budget.year" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="year_budget" ></property>
+        <property name="label" value="Año Presupuesto" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>year_budget</value></entry>
+                    <entry><key><value>type</value></key><value>String</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>
+
+    <object id="dp.dim.budget.organism" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="organism" ></property>
+        <property name="label" value="Organismo" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>organism_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código Organismo</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>organism_name</value></entry>
+                    <entry><key><value>label</value></key><value>Organismo</value></entry>
+                </dict>
+           </list>
+       </property>
+   </object>    
+    
+    <object id="dp.dim.budget.section" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="section" ></property>
+        <property name="label" value="Sección" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>section_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código Sección</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>section_name</value></entry>
+                    <entry><key><value>label</value></key><value>Sección</value></entry>
+                </dict>
+           </list>
+       </property>
+   </object>
+       
+    <object id="dp.dim.budget.organismsection" class="cubetl.olap.HierarchyDimension" scope="singleton">
+        
+        <property name="name" value="organismsection" ></property>
+        <property name="label" value="Organismo" ></property>
+        <property name="levels">
+            <list>
+                <ref object="dp.dim.budget.organism" />
+                <ref object="dp.dim.budget.section" />
+            </list>
+        </property>
+        <property name="hierarchies">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>organism</value></entry>
+                    <entry><key><value>label</value></key><value>Organismo</value></entry>
+                    <entry><key><value>levels</value></key><value>organism, section</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>       
+    
+    <object id="dp.dim.budget.program" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="program" ></property>
+        <property name="label" value="Programa" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>program_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código Programa</value></entry>
+                </dict>            
+                <dict>
+                    <entry><key><value>name</value></key><value>program</value></entry>
+                    <entry><key><value>label</value></key><value>Programa</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object>   
+
+    <object id="dp.dim.budget.concept.level1" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="concept_l1" ></property>
+        <property name="label" value="Capítulo" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>l1_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>l1_name</value></entry>
+                    <entry><key><value>label</value></key><value>Capítulo</value></entry>
+                </dict>
+           </list>
+       </property>
+   </object>
+    <object id="dp.dim.budget.concept.level2" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="concept_l2" ></property>
+        <property name="label" value="Artículo" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>l2_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>l2_name</value></entry>
+                    <entry><key><value>label</value></key><value>Artículo</value></entry>
+                </dict>
+           </list>
+       </property>
+   </object>
+    <object id="dp.dim.budget.concept.level3" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="concept_l3" ></property>
+        <property name="label" value="Concepto" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>l3_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>l3_name</value></entry>
+                    <entry><key><value>label</value></key><value>Concepto</value></entry>
+                </dict>
+           </list>
+       </property>
+    </object>
+    <object id="dp.dim.budget.concept.level4" class="cubetl.olap.Dimension" scope="singleton">
+        <property name="name" value="concept_l4" ></property>
+        <property name="label" value="Subconcepto" ></property>
+        <property name="attributes">
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>l4_code</value></entry>
+                    <entry><key><value>label</value></key><value>Código</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>l4_name</value></entry>
+                    <entry><key><value>label</value></key><value>Subconcepto</value></entry>
+                </dict>
+           </list>
+       </property>
+    </object>  
+
+    <object id="dp.dim.budget.concept" class="cubetl.olap.HierarchyDimension" scope="singleton">
+        
+        <property name="name" value="concept" ></property>
+        <property name="label" value="Concept" ></property>
+        <property name="levels">
+            <list>
+                <ref object="dp.dim.budget.concept.level1" />
+                <ref object="dp.dim.budget.concept.level2" />
+                <ref object="dp.dim.budget.concept.level3" />
+                <ref object="dp.dim.budget.concept.level4" />
+            </list>
+        </property>
+    </object>
+
+    <object id="dp.fact.budget.general" class="cubetl.olap.Fact" scope="singleton">
+        
+        <property name="name" value="dvmi_budget_general" />
+        <property name="label" value="DVMI / Presupuestos Generales" />
+        
+        <property name="dimensions" >
+            <list>
+                <ref object="dp.dim.budget.year" />
+                <ref object="dp.dim.budget.organismsection" />
+                <ref object="dp.dim.budget.program" />
+                <ref object="dp.dim.budget.concept" />
+            </list>
+        </property>
+        <property name="measures" >
+            <list>
+                <dict>
+                    <entry><key><value>name</value></key><value>expense_total</value></entry>
+                    <entry><key><value>type</value></key><value>Integer</value></entry>
+                </dict>
+                <dict>
+                    <entry><key><value>name</value></key><value>expense_per_person</value></entry>
+                    <entry><key><value>type</value></key><value>Float</value></entry>
+                    <entry><key><value>aggregations</value></key><value>sum</value></entry>
+                </dict>
+            </list>
+        </property>
+    </object> 
+
+    <object id="dp.olapmapper.budget.general" class="cubetl.olap.OlapMapper" scope="singleton">
+    
+        <property name="include">
+            <list>
+                <ref object="dp.olapmapper.budget.autonomy" />
+            </list>
+        </property>
+    
+        <property name="mappers">
+            <list>
+
+                <object class="cubetl.olap.sql.EmbeddedDimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.year" />
+                </object> 
+            
+                <object class="cubetl.olap.sql.DimensionMapper" >
+
+                    <property name="entity" ref="dp.dim.budget.program" />
+                    <property name="table" value="pge_program" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>program_code</value></entry>
+                                <entry><key><value>column</value></key><value>code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["program_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>program</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["program_program"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>
+            
+                <object class="cubetl.olap.sql.CompoundHierarchyDimensionMapper" >
+                    <property name="table" value="pge_organismsection" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="entity" ref="dp.dim.budget.organismsection" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>id</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["section_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                                <entry><key><value>type</value></key><value>String</value></entry>
+					        </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>organism_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["organism_code"] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>organism_name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["organism_name"] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>section_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["section_code"] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>section_name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["section_name"] }</value></entry>
+                            </dict>
+                        </list>
+                    </property>        
+                </object>                 
+                
+                <object class="cubetl.olap.sql.MultiTableHierarchyDimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.concept" />
+                </object>                
+                
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.concept.level1" />
+                    <property name="table" value="pge_concept_l1_section" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l1_code</value></entry>
+                                <entry><key><value>column</value></key><value>code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l1_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l1_name</value></entry>
+                                <entry><key><value>column</value></key><value>name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l1_name"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.concept.level2" />
+                    <property name="table" value="pge_concept_l2_article" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l2_code</value></entry>
+                                <entry><key><value>column</value></key><value>code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l2_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l2_name</value></entry>
+                                <entry><key><value>column</value></key><value>name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l2_name"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>                
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.concept.level3" />
+                    <property name="table" value="pge_concept_l3_concept" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l3_code</value></entry>
+                                <entry><key><value>column</value></key><value>code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l3_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l3_name</value></entry>
+                                <entry><key><value>column</value></key><value>name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l3_name"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>                                
+                <object class="cubetl.olap.sql.DimensionMapper" >
+                    <property name="entity" ref="dp.dim.budget.concept.level4" />
+                    <property name="table" value="pge_concept_l4_subconcept" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l4_code</value></entry>
+                                <entry><key><value>column</value></key><value>code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l4_code"] }</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>l4_name</value></entry>
+                                <entry><key><value>column</value></key><value>name</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["concept_l4_name"] }</value></entry>
+                            </dict>                            
+                        </list>
+                    </property>        
+                </object>                
+                
+                <object class="cubetl.olap.sql.FactMapper" >
+                    
+                    <property name="entity" ref="dp.fact.budget.general" />
+                    <property name="table" value="dvmi_budget_general" />
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="store_mode" value="insert" />
+                    <!-- <property name="lookup_cols" /> -->    
+                    
+                    <property name="auto_store">
+                        <list>
+                            <ref object="dp.dim.budget.organismsection" />
+                        </list>
+                    </property>
+                    <property name="mappings">
+                        <list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>id</value></entry>
+                                <entry><key><value>pk</value></key><value>True</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["id"] }</value></entry>
+                            </dict>
+                        </list>
+                    </property>        
+                </object> 
+                
+            </list>
+        </property>
+        
+    </object>
+
+
+
+    <object id="dp.table.budget.general.organisms" class="cubetl.table.MemoryTable" scope="singleton">
+    </object>
+
+    <object id="dp.table.budget.general.sections" class="cubetl.table.MemoryTable" scope="singleton">
+    </object>
+
+	<object id="dp.process.budget.general" class="cubetl.flow.Chain" scope="singleton">
+		<property name="fork" value="True" />
+		<property name="steps">
+			<list>
+
+                <object class="cubetl.flow.Iterator" >
+                    <property name="name" value="year_budget" />
+                    <property name="values" value="2008, 2009, 2010, 2011, 2012, 2012P, 2013, 2013P, 2014P" />
+                </object>
+                
+                <object class="cubetl.util.log.Log">
+                    <property name="message"><value>Processing general budget data for year ${ m['year_budget'] }</value></property>
+                </object>
+                
+                <!-- Load organisms table -->
+                <object class="cubetl.flow.Chain" >
+                    <property name="fork" value="True" />
+			        <property name="steps">
+			            <list>
+			                <object class="cubetl.csv.CsvFileReader">
+			                    <property name="filename" value="${ ctx.props['path_data'] }/dvmi/data/pge/${ m['year_budget'] }/top_level_sections.csv" />
+			                    <property name="encoding" value="utf-8" />
+			                    <property name="headers" value="organism_code, organism_name" />
+			                </object>
+                            <object class="cubetl.table.TableInsert">
+                                <property name="table" ref="dp.table.budget.general.organisms" />
+                                <property name="mappings">
+	                               <list>
+	                                   <dict>
+	                                       <entry><key><value>name</value></key><value>organism_code</value></entry>
+	                                   </dict>
+	                                   <dict>
+                                           <entry><key><value>name</value></key><value>organism_name</value></entry>
+                                       </dict>
+	                               </list>
+	                            </property>
+                            </object>			                
+	                   </list>
+                   </property>        
+                </object>
+
+                <!-- Load sections table -->
+                <object class="cubetl.flow.Chain" >
+                    <property name="fork" value="True" />
+                    <property name="steps">
+                        <list>
+                            <object class="cubetl.csv.CsvFileReader">
+                                <property name="filename" value="${ ctx.props['path_data'] }/dvmi/data/pge/${ m['year_budget'] }/child_sections.csv" />
+                                <property name="encoding" value="utf-8" />
+                                <property name="headers" value="section_code, section_code1, section_code2, section_name" />
+                            </object>
+                            <object class="cubetl.table.TableInsert">
+                                <property name="table" ref="dp.table.budget.general.sections" />
+                                <property name="mappings">
+                                   <list>
+                                       <dict>
+                                           <entry><key><value>name</value></key><value>section_code</value></entry>
+                                           <entry><key><value>value</value></key><value>${ m["section_code"].replace(".", "_") }</value></entry>
+                                       </dict>
+                                       <dict>
+                                           <entry><key><value>name</value></key><value>section_name</value></entry>
+                                       </dict>
+                                   </list>
+                                </property>
+                            </object>                           
+                       </list>
+                   </property>        
+                </object>
+
+				<ref object="dp.sql.transaction" />
+
+				<object class="cubetl.csv.CsvFileReader">
+					<property name="filename" value="${ ctx.props['path_data'] }/dvmi/data/pge/${ m['year_budget'] }/expenses.csv" />
+					<property name="encoding" value="utf-8" />
+					<property name="delimiter" value="|" />
+					<property name="headers" value="id, year_file, organism_code, section_code1, section_code2, program_code, concept_code, concept, expense_total" />
+				</object>
+
+                <object class="cubetl.script.Eval">
+                    <property name="eval">
+                        <list>                            
+                            <dict>
+                                <entry><key><value>name</value></key><value>data</value></entry>
+                                <entry><key><value>value</value></key><value>${ None }</value></entry>
+                            </dict>
+                        </list>
+                    </property>
+                </object>
+
+			    <object class="cubetl.flow.Filter" scope="singleton">
+			        <property name="condition"><value>${ m['program_code'] != "" }</value></property>
+			    </object>
+
+				<object class="cubetl.script.Eval">
+					<property name="eval">
+						<list>
+                            <dict>
+                                <entry><key><value>name</value></key><value>id</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['year_budget'] }_${ m['id'] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>year_census</value></entry>
+                                <entry><key><value>value</value></key><value>${ text.extract_number(m['year_file']) }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>year_census</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['year_census'] if (m['year_census'] &lt;= 2012) else 2012  }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>expense_total</value></entry>
+                                <entry><key><value>value</value></key><value>${ float(m['expense_total']) * 1000.0 }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>section_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['organism_code'] + "_" + m['section_code1'] + "_" + m['section_code2'] }</value></entry>
+                            </dict>
+                            
+                            <dict>
+                                <entry><key><value>name</value></key><value>concept_code_pad</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['concept_code'] + 'x' * (5 - len(m['concept_code'])) }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>concept_l1_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['concept_code_pad'][:1] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>concept_l2_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['concept_code_pad'][:2] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>concept_l3_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['section_code'] + "_" + m['program_code'] + "_" + m['concept_code_pad'][:3] }</value></entry>
+                            </dict>
+                            <dict>
+                                <entry><key><value>name</value></key><value>concept_l4_code</value></entry>
+                                <entry><key><value>value</value></key><value>${ m['section_code'] + "_" + m['program_code'] + "_" + m['concept_code_pad'] }</value></entry>
+                            </dict>
+                            
+                        </list>
+                    </property>
+                </object>
+                
+                <object class="cubetl.script.Script">
+                    <property name="refs">
+                        <dict>
+                            <entry><key><value>olapmapper</value></key><ref object="dp.olapmapper.budget.general" /></entry>
+                            <entry><key><value>fact_budget</value></key><ref object="dp.fact.budget.general" /></entry>
+                            <entry><key><value>dim_program</value></key><ref object="dp.dim.budget.program" /></entry>
+                            <entry><key><value>dim_concept_l1</value></key><ref object="dp.dim.budget.concept.level1" /></entry>
+                            <entry><key><value>dim_concept_l2</value></key><ref object="dp.dim.budget.concept.level2" /></entry>
+                            <entry><key><value>dim_concept_l3</value></key><ref object="dp.dim.budget.concept.level3" /></entry>
+                            <entry><key><value>dim_concept_l4</value></key><ref object="dp.dim.budget.concept.level4" /></entry>
+                        </dict>
+                    </property>
+			        <property name="code"><value><![CDATA[
+
+conn = refs["olapmapper"].entity_mapper(refs["fact_budget"])._sqltable.connection.connection()
+
+# Insert concept
+if (m["concept_code"] == ""):
+    # Must be a program.
+    m["program_program"] = m["concept"]
+    program_id = refs["olapmapper"].entity_mapper(refs["dim_program"]).store(ctx, m)
+
+elif (len(m["concept_code"]) == 1):
+    
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l1"]).store(
+        ctx, { "concept_l1_code": m["concept_l1_code"] , "concept_l1_name": m["concept"] } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l2"]).store(
+        ctx, { "concept_l2_code": m["concept_l2_code"] , "concept_l2_name": "-" } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l3"]).store(
+        ctx, { "concept_l3_code": m["concept_l3_code"] , "concept_l3_name": "-" } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l4"]).store(
+        ctx, { "concept_l4_code": m["concept_l4_code"] , "concept_l4_name": "-" } )
+    
+elif (len(m["concept_code"]) == 2):
+
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l2"]).store(
+        ctx, { "concept_l2_code": m["concept_l2_code"] , "concept_l2_name": m["concept"] } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l3"]).store(
+        ctx, { "concept_l3_code": m["concept_l3_code"] , "concept_l3_name": "-" } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l4"]).store(
+        ctx, { "concept_l4_code": m["concept_l4_code"] , "concept_l4_name": "-" } )
+
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-1]))
+        
+elif (len(m["concept_code"]) == 3):
+    
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l3"]).store(
+        ctx, { "concept_l3_code": m["concept_l3_code"] , "concept_l3_name": m["concept"] } )
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l4"]).store(
+        ctx, { "concept_l4_code": m["concept_l4_code"] , "concept_l4_name": "-" } )        
+    
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-2]))
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-1]))        
+                
+else:
+
+    refs["olapmapper"].entity_mapper(refs["dim_concept_l4"]).store(
+        ctx, { "concept_l4_code": m["concept_l4_code"] , "concept_l4_name": m["concept"] } )                       
+    
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-4]))
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-3]))
+    conn.execute("delete from dvmi_budget_general where id = '%s'" % (m["id"][:-2]))
+    
+			        ]]></value></property>
+			    </object> 
+                
+                <object class="cubetl.sql.QueryLookup">
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="query"><value> 
+                        select count(*) as children_count from dvmi_budget_general where id like '${ m["id"] }%' and not id = '${ m["id"] }';
+                    </value></property>
+                </object>
+                <object class="cubetl.flow.Filter" scope="singleton">
+                    <property name="condition"><value>${ m['children_count'] == 0 }</value></property>
+                </object>                
+                
+                <object class="cubetl.sql.cache.CachedQueryLookup">
+                    <property name="connection" ref="dp.sql.connection" />
+                    <property name="query"><value> 
+                        select sum(census) as census_year from ine_census where year = '${ m["year_census"] }'
+                    </value></property>
+                </object>
+                
+                <object class="cubetl.table.cache.CachedTableLookup">
+                    <property name="table" ref="dp.table.budget.general.organisms" />
+                    <property name="lookup" >
+                        <dict>
+                            <entry><key><value>organism_code</value></key><value>${ m["organism_code"] }</value></entry>
+                        </dict>
+                    </property>
+                    <property name="default" >
+                        <dict>
+                            <entry><key><value>organism_name</value></key><value>Desconocido (${ m["organism_code"] })</value></entry>
+                        </dict>
+                    </property>                                        
+                </object>
+                
+                <object class="cubetl.table.cache.CachedTableLookup">
+                    <property name="table" ref="dp.table.budget.general.sections" />
+                    <property name="lookup" >
+                        <dict>
+                            <entry><key><value>section_code</value></key><value>${ m["section_code"] }</value></entry>
+                        </dict>
+                    </property>
+                    <property name="default" >
+                        <dict>
+                            <entry><key><value>section_name</value></key><value>Desconocido (${ m["section_code"] })</value></entry>
+                        </dict>
+                    </property>                     
+                </object>                
+
+                <object class="cubetl.script.Eval">
+                    <property name="eval">
+                        <list>                            
+                            <dict>
+                                <entry><key><value>name</value></key><value>expense_per_person</value></entry>
+                                <entry><key><value>value</value></key><value>${ m["expense_total"] / m["census_year"] }</value></entry>
+                            </dict>
+						</list>
+					</property>
+				</object>
+				
+                <object class="cubetl.util.Assert">
+                    <property name="eval" value="${ text.extract_number(m['year_budget']) == text.extract_number(m['year_file']) }" />
+                    <property name="message" value="Error: year_budget ${ m['year_budget'] } does not match ${ m['year_file'] }" />
+                </object>
+				
+                <ref object="cubetl.util.print" />  
+
+			    <object class="cubetl.olap.Store" >
+			        <property name="entity" ref="dp.fact.budget.general" />
+			        <property name="mapper" ref="dp.olapmapper.budget.general" />
+			    </object>
+
+				<ref object="dp.node.logperformance" />
+
+			</list>
+		</property>
+	</object>
+
+</objects>
