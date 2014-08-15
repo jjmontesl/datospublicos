@@ -171,7 +171,7 @@
     <object id="dp.fact.budget.general" class="cubetl.olap.Fact" scope="singleton">
         
         <property name="name" value="dvmi_budget_general" />
-        <property name="label" value="DVMI / Presupuestos Generales" />
+        <property name="label" value="Presupuestos / España" />
         
         <property name="dimensions" >
             <list>

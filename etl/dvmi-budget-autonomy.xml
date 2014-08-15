@@ -21,7 +21,7 @@
     <object id="dp.fact.budget.autonomy" class="cubetl.olap.Fact" scope="singleton">
         
         <property name="name" value="dvmi_budget_autonomy" />
-        <property name="label" value="DVMI / Presupuestos Autonómicos" />
+        <property name="label" value="Presupuestos / Autonómicos" />
         
         <property name="dimensions" >
             <list>

@@ -231,7 +231,7 @@
                 <ref object="dp.sql.transaction" />
                 
                 <object class="cubetl.fs.DirectoryFileReader" >
-			        <property name="path" value="${ ctx.props['path_data'] }/boe/data/${ ctx.props['boe_year'] }" />
+			        <property name="path" value="${ ctx.props['path_data'] }/boe/data/${ m['boe_year'] }" />
 			        <property name="filter_re" value=".*.xml" />
 			        <property name="encoding" value="latin-1" />
 			    </object>

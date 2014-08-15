@@ -23,9 +23,9 @@
     <object id="dp.node.logperformance" class="cubetl.util.log.LogPerformance" scope="singleton">
     </object>  
     
-    <object id="dp.process.export-cubes" class="cubetl.cubes.Cubes010ModelWriter" scope="singleton">
+    <object id="dp.process.export-cubes" class="cubetl.cubes.Cubes10ModelWriter" scope="singleton">
         <property name="olapmapper">
-	        <object ref="olap-sql-mapper-dvmi-autonomy" class="cubetl.olap.OlapMapper" scope="singleton">
+	        <object class="cubetl.olap.OlapMapper">
 		        <property name="include">
 		            <list>
 		                <ref object="dp.olapmapper.ine.census" />

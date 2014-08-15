@@ -72,7 +72,7 @@
     <object id="dp.fact.cg.process" class="cubetl.olap.Fact" >
     
         <property name="name" value="cg_process" />
-        <property name="label" value="Contratos Galicia / Procedimientos" />
+        <property name="label" value="Galicia / Adjudicaciones" />
         
         <property name="dimensions" >
             <list>
@@ -281,18 +281,6 @@
                                 <entry><key><value>name</value></key><value>procedure_cost</value></entry>
                                 <entry><key><value>value</value></key><value>${| text.extract_number(m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td[4]")) |}</value></entry>
                             </dict>
-                            <dict>
-                                <entry><key><value>name</value></key><value>company</value></entry>
-                                <entry><key><value>value</value></key><value>${| m['tidy'].findtext("{http://www.w3.org/1999/xhtml}td[3]") |}</value></entry>
-                                <entry><key><value>default</value></key><value>N/A</value></entry>
-                            </dict>
-                            
-                            <!-- 
-                            <dict>
-                                <entry><key><value>name</value></key><value>resolution</value></entry>
-                                <entry><key><value>value</value></key><value>${| m['tidy'].findtext('.//{http://www.w3.org/1999/xhtml}div[@id="tabs-3"]//{http://www.w3.org/1999/xhtml}table') |}</value></entry>
-                            </dict>
-                             -->
                             
 			            </list>
 			        </property>  
@@ -307,29 +295,36 @@ from cubetl.functions import text
 resolution = m['tidy'].find('.//{http://www.w3.org/1999/xhtml}div[@id="tabs-3"]//{http://www.w3.org/1999/xhtml}table')
 
 if (resolution != None):
-	for tr in resolution.findall('{http://www.w3.org/1999/xhtml}tr'):
-	    
+    for tr in resolution.findall('{http://www.w3.org/1999/xhtml}tr'):
+        
+        m["company"] = (tr.findtext("{http://www.w3.org/1999/xhtml}td[3]"))
+        
 	    #if (tr.findtext("{http://www.w3.org/1999/xhtml}td[1]") == "Provisional"):
-	    date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
-	    if (date):
-	       date = date.split("-")
-	       if (len(date) != 3): continue
-	       m["date_provisional"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
-	    
-	    if (tr.findtext("{http://www.w3.org/1999/xhtml}td[4]") != ""):
-	        m["contractor_cost"] = text.extract_number(tr.findtext("{http://www.w3.org/1999/xhtml}td[4]"))
-	        date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
-	        if (date):
-	           date = date.split("-")
-	           m["date_final"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
-	    else:
-	        logger.debug("Missing final amount in %s" % m["filename"])
-	        m["date_final"] = datetime.date(1979, 1, 1)
-	        m["contractor_cost"] = 0
+        date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
+        if (date):
+           date = date.split("-")
+           if (len(date) != 3): continue
+           m["date_provisional"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
+        
+        if (tr.findtext("{http://www.w3.org/1999/xhtml}td[4]") != ""):
+            m["contractor_cost"] = text.extract_number(tr.findtext("{http://www.w3.org/1999/xhtml}td[4]"))
+            date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
+            if (date):
+               date = date.split("-")
+               m["date_final"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
+        else:
+            logger.debug("Missing final amount in %s" % m["filename"])
+            m["date_final"] = datetime.date(1979, 1, 1)
+            m["contractor_cost"] = 0
 
 if (not "date_provisional" in m): m["date_provisional"] = datetime.date(1979, 1, 1)
 if (not "date_final" in m): m["date_final"] = datetime.date(1979, 1, 1)
 if (not "contractor_cost" in m): m["contractor_cost"] = 0
+
+if (not "company" in m): 
+    m["company"] = "[Desconocida]" 
+else:
+    m["company"] = m["company"].upper()
     
                     ]]></value></property>
                 </object> 
