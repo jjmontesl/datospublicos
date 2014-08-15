@@ -88,10 +88,12 @@
             <list>
                 <dict>
                     <entry><key><value>name</value></key><value>procedure_cost</value></entry>
+                    <entry><key><value>label</value></key><value>Precio del Procedimiento</value></entry>
                     <entry><key><value>type</value></key><value>Float</value></entry>
                 </dict>
                 <dict>
                     <entry><key><value>name</value></key><value>contractor_cost</value></entry>
+                    <entry><key><value>label</value></key><value>Precio del Adjudicatario</value></entry>
                     <entry><key><value>type</value></key><value>Float</value></entry>
                 </dict>
             </list>
@@ -267,20 +269,20 @@
 			                <dict>
                                 <entry><key><value>name</value></key><value>type</value></entry>
                                 <entry><key><value>value</value></key><value>${| m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td") |}</value></entry>
-                                <entry><key><value>value</value></key><value>${| m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td") |}</value></entry>
                             </dict>
                             <dict>
                                 <entry><key><value>name</value></key><value>purpose</value></entry>
-                                <entry><key><value>value</value></key><value>${| m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td[3]") |}</value></entry>
+                                <entry><key><value>value</value></key><value>${| m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td[3]/{http://www.w3.org/1999/xhtml}span") |}</value></entry>
                             </dict>
                             <dict>
                                 <entry><key><value>name</value></key><value>contract</value></entry>
                                 <entry><key><value>value</value></key><value>${| m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[2]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td") |}</value></entry>
                             </dict>
+                            
                             <dict>
                                 <entry><key><value>name</value></key><value>procedure_cost</value></entry>
-                                <entry><key><value>value</value></key><value>${| text.extract_number(m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td[4]")) |}</value></entry>
-                            </dict>
+                                <entry><key><value>value</value></key><value>${| text.extract_number(m['tidy'].findtext(".//{http://www.w3.org/1999/xhtml}table[1]/{http://www.w3.org/1999/xhtml}tr[2]/{http://www.w3.org/1999/xhtml}td[4]/{http://www.w3.org/1999/xhtml}span")) |}</value></entry>
+                            </dict>                            
                             
 			            </list>
 			        </property>  
@@ -292,8 +294,9 @@
 import datetime
 from cubetl.functions import text
 
-resolution = m['tidy'].find('.//{http://www.w3.org/1999/xhtml}div[@id="tabs-3"]//{http://www.w3.org/1999/xhtml}table')
+m["company"] = None
 
+resolution = m['tidy'].find('.//{http://www.w3.org/1999/xhtml}div[@id="tabs-3"]//{http://www.w3.org/1999/xhtml}table')
 if (resolution != None):
     for tr in resolution.findall('{http://www.w3.org/1999/xhtml}tr'):
         
@@ -321,7 +324,7 @@ if (not "date_provisional" in m): m["date_provisional"] = datetime.date(1979, 1,
 if (not "date_final" in m): m["date_final"] = datetime.date(1979, 1, 1)
 if (not "contractor_cost" in m): m["contractor_cost"] = 0
 
-if (not "company" in m): 
+if (m["company"] == None): 
     m["company"] = "[Desconocida]" 
 else:
     m["company"] = m["company"].upper()
