@@ -1,0 +1,44 @@
+
+---
+
+!!python/object:cubetl.sql.Connection
+id: dp.sql.connection
+url: sqlite:////home/jjmontes/git/datospublicos/cubes/datospublicos-cubes.sqlite
+
+---
+
+!!python/object:cubetl.core.ContextProperties
+id: dp.contextproperties
+
+dir_base: /home/jjmontes/git/datospublicos
+dir_data: /home/jjmontes/git/datospublicos/data
+
+---
+
+!!python/object:cubetl.sql.Transaction
+id: dp.sql.transaction
+connection: !ref dp.sql.connection
+#enabled: False
+
+---
+!include ${ ctx.props['dir_base'] }/etl/ine-census.yaml
+---
+!include ${ ctx.props['dir_base'] }/etl/cg-contracts.yaml
+---
+!include ${ ctx.props['dir_base'] }/etl/boe-articles.yaml
+---
+
+!!python/object:cubetl.cubes.Cubes10ModelWriter
+id: dp.export-cubes
+olapmapper:
+  !!python/object:cubetl.olap.OlapMapper
+  include:
+  - !ref dp.ine.census.olapmapper
+  #- !ref dp.olapmapper.budget.autonomy
+  #- !ref dp.olapmapper.budget.general
+  #- !ref dp.olapmapper.boe.article
+  #- !ref dp.olapmapper.boe.analysis
+  - !ref dp.cg.olapmapper
+
+---
+

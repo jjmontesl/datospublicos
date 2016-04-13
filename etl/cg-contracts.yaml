@@ -1,0 +1,250 @@
+
+---
+
+!!python/object:cubetl.olap.AliasDimension
+id: dp.cg.date_provisional
+name: date_provisional
+label: Fecha Provisional
+dimension: !ref cubetl.datetime.date
+
+---
+
+!!python/object:cubetl.olap.AliasDimension
+id: dp.cg.date_final
+name: date_final
+label: Fecha Final
+dimension: !ref cubetl.datetime.date
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.cg.company
+name: company
+label: Empresa
+attributes:
+- { name: company, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.cg.type
+name: type
+label: Tipo
+attributes:
+- { name: type, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.cg.contract
+name: contract
+label: Contrato
+attributes:
+- { name: contract, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.cg.state
+name: state
+label: Estado
+attributes:
+- { name: state, type: String }
+
+---
+
+!!python/object:cubetl.olap.Fact
+id: dp.cg.process.process
+name: cg_process
+label: Galicia / Adjudicaciones
+dimensions:
+- !ref dp.cg.date_provisional
+- !ref dp.cg.date_final
+- !ref dp.cg.company
+- !ref dp.cg.type
+- !ref dp.cg.contract
+- !ref dp.cg.state
+measures:
+- name: procedure_cost
+  label: Precio del Procedimiento
+  type: Float
+- name: contractor_cost
+  label: Precio del Adjudicatario
+  type: Float
+attributes:
+- name: purpose
+  type: String
+
+---
+
+!!python/object:cubetl.olap.OlapMapper
+id: dp.cg.olapmapper
+#include:
+mappers:
+- !!python/object:cubetl.olap.sql.CompoundHierarchyDimensionMapper
+  entity: !ref dp.cg.date_provisional
+  table: date
+  connection: !ref dp.sql.connection
+  eval:
+  - name: _cubetl_datetime_date
+    value: ${ m['date_provisional'] }
+  mappings:
+  - !ref cubetl.datetime.mappings
+- !!python/object:cubetl.olap.sql.CompoundHierarchyDimensionMapper
+  entity: !ref dp.cg.date_final
+  table: date
+  connection: !ref dp.sql.connection
+  eval:
+  - name: _cubetl_datetime_date
+    value: ${ m['date_final'] }
+  mappings:
+  - !ref cubetl.datetime.mappings
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.cg.company
+  table: cg_company
+  connection: !ref dp.sql.connection
+  lookup_cols: company
+  mappings:
+  - name: id
+    pk: True
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.cg.type
+  table: cg_type
+  connection: !ref dp.sql.connection
+  lookup_cols: type
+  mappings:
+  - name: id
+    pk: True
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.cg.contract
+  table: cg_contract
+  connection: !ref dp.sql.connection
+  lookup_cols: contract
+  mappings:
+  - name: id
+    pk: True
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.cg.state
+  table: cg_state
+  connection: !ref dp.sql.connection
+  lookup_cols: state
+  mappings:
+  - name: id
+    pk: True
+- !!python/object:cubetl.olap.sql.FactMapper
+  entity: !ref dp.cg.process.process
+  table: cg_process
+  connection: !ref dp.sql.connection
+  store_mode: insert
+  mappings:
+  - name: id
+    pk: True
+    type: Integer
+    value: ${ int(m["id"]) }
+
+---
+
+!!python/object:cubetl.flow.Chain
+id: dp.cg.process
+steps:
+
+- !!python/object:cubetl.flow.Chain
+  fork: True
+  steps:
+
+  - !ref dp.sql.transaction
+
+  - !!python/object:cubetl.fs.DirectoryFileReader
+    path: ${ ctx.props['dir_data'] }/contratosdegalicia/data
+    filter_re: .*.html
+    #filter_re: .*25729.html
+    encoding: latin-1
+
+  - !!python/object:cubetl.xml.BeautifulSoupParser
+    _dummy:
+
+  - !!python/object:cubetl.flow.Filter
+    condition: ${ "Estado do procedemento" in m['data'] }
+
+  - !!python/object:cubetl.script.Eval
+    eval:
+    - name: id
+      value: ${ text.re_search("^.*licitacion-(\d+).html$", m["path"], 1) }
+    - name: state
+      value: ${ xml.scrap(m['soup'], "Estado do procede") }
+    - name: type
+      value: ${ m['soup'].findAll(text=re.compile("Tipo de procedemento"))[0].findParent('table').findChildren('tr')[1].findChildren('td')[0].text }
+    - name: purpose
+      value: ${ m['soup'].findAll(text=re.compile("Obxecto"))[0].findParent('table').findChildren('tr')[1].findChildren('td')[2].text }
+    - name: contract
+      value: ${ m['soup'].findAll(text=re.compile("Tipo de contrato"))[0].findParent('table').findChildren('tr')[1].findChildren('td')[0].text }
+    - name: procedure_cost
+      value: ${ text.extract_number(m['soup'].findAll(text=re.compile("Importe"))[0].findParent('table').findChildren('tr')[1].findChildren('td')[3].text) }
+
+    - name: date_provisional
+      value: ${ datetime.datetime.utcnow() }
+    - name: date_final
+      value: ${ datetime.datetime.utcnow() }
+    - name: company
+      value: "-"
+    - name: contractor_cost
+      value: 0
+
+#  - !!python/object:cubetl.script.Script
+#    code: |
+#
+#      import datetime
+#      from cubetl.text import functions
+#
+#      m["company"] = None
+#
+#      resolution = m['tidy'].find('.//{http://www.w3.org/1999/xhtml}div[@id="tabs-3"]//{http://www.w3.org/1999/xhtml}table')
+#      if (resolution != None):
+#          for tr in resolution.findall('{http://www.w3.org/1999/xhtml}tr'):
+#
+#              m["company"] = (tr.findtext("{http://www.w3.org/1999/xhtml}td[3]"))
+#
+#      	    #if (tr.findtext("{http://www.w3.org/1999/xhtml}td[1]") == "Provisional"):
+#              date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
+#              if (date):
+#                 date = date.split("-")
+#                 if (len(date) != 3): continue
+#                 m["date_provisional"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
+#
+#              if (tr.findtext("{http://www.w3.org/1999/xhtml}td[4]") != ""):
+#                  m["contractor_cost"] = text.extract_number(tr.findtext("{http://www.w3.org/1999/xhtml}td[4]"))
+#                  date = tr.findtext("{http://www.w3.org/1999/xhtml}td[5]")
+#                  if (date):
+#                     date = date.split("-")
+#                     m["date_final"] = datetime.date(int(date[2]), int(date[1]), int(date[0]))
+#              else:
+#                  logger.debug("Missing final amount in %s" % m["path"])
+#                  m["date_final"] = datetime.date(1979, 1, 1)
+#                  m["contractor_cost"] = 0
+#
+#      if (not "date_provisional" in m): m["date_provisional"] = datetime.date(1979, 1, 1)
+#      if (not "date_final" in m): m["date_final"] = datetime.date(1979, 1, 1)
+#      if (not "contractor_cost" in m): m["contractor_cost"] = 0
+#
+#      if (m["company"] == None):
+#          m["company"] = "[Desconocida]"
+#      else:
+#          m["company"] = m["company"].upper()
+
+  - !!python/object:cubetl.script.Script
+    code: |
+
+      del(m["soup"])
+      del(m["data"])
+
+  - !!python/object:cubetl.olap.Store
+    entity: !ref dp.cg.process.process
+    mapper: !ref dp.cg.olapmapper
+
+  - !ref cubetl.util.print
+
+  - !ref cubetl.util.logperformance
+
+---
+
+

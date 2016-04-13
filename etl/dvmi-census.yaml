@@ -1,0 +1,104 @@
+
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.ine.autonomy
+name: autonomy
+label: Comunidad Autónoma
+attributes:
+- name: name
+  type: String
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.ine.genre
+name: genre
+label: Género
+attributes:
+- name: genre
+  type: String
+
+---
+
+!!python/object:cubetl.olap.Fact
+id: dp.ine.census
+name: ine_census
+label: INE / Censo
+dimensions:
+- !ref cubetl.datetime.year
+- !ref dp.ine.genre
+- !ref dp.ine.autonomy
+measures:
+- name: census
+  type: Integer
+
+---
+
+!!python/object:cubetl.olap.OlapMapper
+id: dp.ine.census.olapmapper
+#include:
+mappers:
+- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
+  entity: !ref cubetl.datetime.year
+- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
+  entity: !ref dp.ine.genre
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.ine.autonomy
+  table: ine_autonomy
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["autonomy_id"] }
+    type: Integer
+  - name: name
+    value: ${ m["autonomy_name"] }
+- !!python/object:cubetl.olap.sql.FactMapper
+  entity: !ref dp.ine.census
+  table: ine_census
+  connection: !ref dp.sql.connection
+  lookup_cols: year, genre, autonomy_id
+  mappings:
+  - name: id
+    pk: True
+    type: AutoIncrement
+
+
+---
+
+!!python/object:cubetl.flow.Chain
+id: dp.ine.census.process
+steps:
+- !!python/object:cubetl.flow.Chain
+  fork: True
+  steps:
+  - !ref dp.sql.transaction
+  - !!python/object:cubetl.flow.Multiplier
+    name: year
+    values: 2006, 2007, 2008, 2009, 2010, 2011, 2012
+  - !!python/object:cubetl.csv.CsvFileReader
+    path: ${ ctx.props['dir_data'] }/dvmi/data/censo/Censo${ m['year'] }.csv
+    header: True
+  - !!python/object:cubetl.script.Eval
+    eval:
+    - name: autonomy_id
+      value: ${ m['Idcomu'] }
+    - name: autonomy_name
+      value: ${ m['Comunidad'] }
+  - !!python/object:cubetl.flow.Multiplier
+    name: genre
+    values: [ 'Varones', 'Mujeres' ]
+  - !!python/object:cubetl.script.Eval
+    eval:
+    - name: census
+      value: ${ float(m[m['genre']]) }
+  - !ref cubetl.util.print
+  - !!python/object:cubetl.olap.Store
+    entity: !ref dp.ine.census
+    mapper: !ref dp.ine.census.olapmapper
+  - !ref cubetl.util.logperformance
+
+---
+

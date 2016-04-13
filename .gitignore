@@ -1,2 +1,7 @@
 /ROADMAP
-/static-old
+/static.old
+/web
+
+*.sqlite
+*.sqlite.bak
+

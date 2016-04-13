@@ -1,0 +1,202 @@
+
+---
+
+!!python/object:cubetl.olap.AliasDimension
+id: dp.boe.datepublished
+name: date_published
+label: Fecha Publicación
+dimension: !ref cubetl.datetime.date
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.department
+name: department
+label: Departamento
+attributes:
+- { name: department, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.imageletter
+name: imageletter
+label: Letra Imagen
+attributes:
+- { name: image_letter, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.section
+name: section
+label: Seccion
+attributes:
+- { name: section, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.journal_num
+name: journal_num
+label: Diario
+attributes:
+- { name: journal_num, type: Integer }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.hasanalysis
+name: hasanalysis
+label: Análisis
+attributes:
+- { name: hasanalysis, type: Boolean }
+
+---
+
+!!python/object:cubetl.olap.Fact
+id: dp.boe.article
+name: boe_article
+label: BOE / Artículos
+dimensions:
+- !ref dp.boe.datepublished
+- !ref dp.boe.department
+- !ref dp.boe.imageletter
+- !ref dp.boe.section
+- !ref dp.boe.journal_num
+- !ref dp.boe.hasanalysis
+measures:
+- name: page_count
+  label: Num Paginas
+  type: Integer
+attributes:
+- name: url_pdf
+  type: String
+- name: page_start
+  type: Integer
+- name: page_end
+  type: Integer
+
+---
+
+!!python/object:cubetl.olap.OlapMapper
+id: dp.boe.olapmapper
+#include:
+mappers:
+- !!python/object:cubetl.olap.sql.CompoundHierarchyDimensionMapper
+  entity: !ref dp.boe.datepublished
+  table: date
+  connection: !ref dp.sql.connection
+  eval:
+  - name: _cubetl_datetime_date
+    value: ${ m['date_published'] }
+  mappings:
+  - !ref cubetl.datetime.mappings
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.department
+  table: boe_department
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ text.slugu( m["department"] ) }
+    type: String
+  - name: department
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.imageletter
+  table: boe_imageletter
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ text.slugu( m["image_letter"] ) }
+    type: String
+- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
+  entity: !ref dp.boe.section
+- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
+  entity: !ref dp.boe.journal_num
+  mappings:
+  - name: journal_num
+- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
+  entity: !ref dp.boe.hasanalysis
+  mappings:
+  - name: hasanalysis
+- !!python/object:cubetl.olap.sql.FactMapper
+  entity: !ref dp.boe.article
+  table: boe_article
+  connection: !ref dp.sql.connection
+  store_mode: lookup
+  mappings:
+  - name: id
+    pk: True
+    value: ${ text.slugu(m["id"]) }
+
+
+---
+
+!!python/object:cubetl.flow.Chain
+id: dp.boe.process
+steps:
+
+- !!python/object:cubetl.flow.Chain
+  fork: True
+  steps:
+
+  - !ref dp.sql.transaction
+
+  - !!python/object:cubetl.fs.DirectoryFileReader
+    path: ${ ctx.props['dir_data'] }/boe/data/${ m['boe_year'] }
+    filter_re: .*.xml
+    encoding: latin-1
+
+  - !!python/object:cubetl.flow.Filter
+    condition: ${ m['data'].strip() != "" }
+    message: 'Filtering empty article: ${ m["filename"] }'
+
+  - !!python/object:cubetl.xml.XmlParser
+    _dummy:
+
+  - !!python/object:cubetl.xml.XPathExtract
+    eval:
+    - name: id
+      xpath: string(//documento/metadatos/identificador)
+    - name: department
+      xpath: string(//documento/metadatos/departamento)
+    - name: page_start
+      xpath: string(//documento/metadatos/pagina_inicial)
+    - name: page_end
+      xpath: string(//documento/metadatos/pagina_final)
+    - name: page_count
+      value: ${ int(m["page_end"]) - int(m["page_start"]) + 1 if (m["page_end"] != "" and m["page_start"] != "") else 0 }
+    - name: journal_num
+      xpath: string(//documento/metadatos/diario_numero)
+    - name: section
+      xpath: string(//documento/metadatos/seccion)
+    - name: image_letter
+      xpath: string(//documento/metadatos/letra_imagen)
+    - name: url_pdf
+      xpath: string(//documento/metadatos/url_pdf)
+    - name: date_published
+      xpath: string(//documento/metadatos/fecha_publicacion)
+      value: ${ text.extract_date(m["date_published"], False) }
+      #value: ${ m["date_published"] }
+    - name: hasanalysis
+      value: ${ m['xml'].xpath('string(//analisis/modalidad)').strip() != '' }
+
+  - !!python/object:cubetl.olap.Store
+    entity: !ref dp.boe.article
+    mapper: !ref dp.boe.olapmapper
+
+  #- !ref dp.boe.analysis
+
+  - !!python/object:cubetl.script.Script
+    code: |
+
+      del(m["xml"])
+      del(m["data"])
+      m["test_script"] = True
+
+  - !ref cubetl.util.print
+
+  - !ref cubetl.util.logperformance
+
