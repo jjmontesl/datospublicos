@@ -36,8 +36,8 @@ olapmapper:
   - !ref dp.ine.census.olapmapper
   #- !ref dp.olapmapper.budget.autonomy
   #- !ref dp.olapmapper.budget.general
-  #- !ref dp.olapmapper.boe.article
-  #- !ref dp.olapmapper.boe.analysis
+  - !ref dp.boe.olapmapper
+  - !ref dp.boe.analysis.olapmapper
   - !ref dp.cg.olapmapper
 
 ---

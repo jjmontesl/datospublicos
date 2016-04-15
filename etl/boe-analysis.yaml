@@ -1,0 +1,218 @@
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.modality
+name: modality
+label: Modalidad
+attributes:
+- { name: modality, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.type
+name: type
+label: Tipo
+attributes:
+- { name: type, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.tramitation
+name: tramitation
+label: Tramitación
+attributes:
+- { name: tramitation, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.procedure
+name: procedure
+label: Procedimiento
+attributes:
+- { name: procedure, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.concept
+name: concept
+label: Concepto
+attributes:
+- { name: concept, type: String }
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.boe.geographic_scope
+name: geographic_scope
+label: Ámbito Geográfico
+attributes:
+- { name: geographic_scope, type: String }
+
+---
+
+!!python/object:cubetl.olap.FactDimension
+id: dp.boe.analysis_article
+name: boe_article
+label: Artículo BOE
+fact: !ref dp.boe.article
+
+---
+
+!!python/object:cubetl.olap.Fact
+id: dp.boe.analysis
+name: boe_analysis
+label: BOE / Análisis
+dimensions:
+- !ref dp.boe.analysis_article
+- !ref dp.boe.modality
+- !ref dp.boe.type
+- !ref dp.boe.tramitation
+- !ref dp.boe.procedure
+- !ref dp.boe.concept
+- !ref dp.boe.geographic_scope
+measures:
+- name: cost
+  label: Coste
+  type: Float
+attributes:
+- name: notes
+  type: String
+
+---
+
+!!python/object:cubetl.olap.OlapMapper
+id: dp.boe.analysis.olapmapper
+include:
+- !ref dp.boe.olapmapper
+mappers:
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.modality
+  table: boe_modality
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["modality_code"] }
+    type: String
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.type
+  table: boe_type
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["type_code"] }
+    type: Integer
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.tramitation
+  table: boe_tramitation
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["tramitation_code"] }
+    type: Integer
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.procedure
+  table: boe_procedure
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["procedure_code"] }
+    type: Integer
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.concept
+  table: boe_concept
+  connection: !ref dp.sql.connection
+  mappings:
+  - name: id
+    pk: True
+    value: ${ m["concept"].split(" ")[0] }
+    type: String
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.boe.geographic_scope
+  table: boe_geographic_scope
+  connection: !ref dp.sql.connection
+  lookup_cols: geographic_scope
+  mappings:
+  - name: id
+    pk: True
+- !!python/object:cubetl.olap.sql.FactDimensionMapper
+  entity: !ref dp.boe.analysis_article
+  mappings:
+  - name: boe_article
+    column: boe_article_id
+    value: ${ text.slugu(m["id"]) }
+    pk: True
+- !!python/object:cubetl.olap.sql.FactMapper
+  entity: !ref dp.boe.analysis
+  table: boe_analysis
+  connection: !ref dp.sql.connection
+  #store_mode: lookup
+  mappings:
+  - name: id
+    pk: True
+    value: ${ text.slugu(m["id"]) }
+
+---
+
+!!python/object:cubetl.flow.Chain
+id: dp.boe.analysis.process
+fork: True
+steps:
+
+- !!python/object:cubetl.flow.Filter
+  condition: ${ m['xml'].xpath('string(//analisis/modalidad)').strip() != '' }
+
+- !!python/object:cubetl.xml.XPathExtract
+  eval:
+  - name: modality
+    xpath: string(//documento/analisis/modalidad)
+    default: DESCONOCIDA
+  - name: modality_code
+    xpath: string(//documento/analisis/modalidad/@codigo)
+    default: 0
+  - name: type
+    xpath: string(//documento/analisis/tipo)
+    default: DESCONOCIDO
+  - name: type_code
+    xpath: string(//documento/analisis/tipo/@codigo)
+    default: 0
+  - name: tramitation
+    xpath: string(//documento/analisis/tramitacion)
+    default: DESCONOCIDO
+  - name: tramitation_code
+    xpath: string(//documento/analisis/tramitacion/@codigo)
+    default: 0
+  - name: procedure
+    xpath: string(//documento/analisis/procedimiento)
+    default: DESCONOCIDO
+  - name: procedure_code
+    xpath: string(//documento/analisis/procedimiento/@codigo)
+    default: 0
+  - name: cost
+    xpath: string(//documento/analisis/importe)
+    value: ${ text.extract_number(m["cost"]) }
+  - name: geographic_scope
+    xpath: string(//documento/analisis/ambito_geografico)
+    default: Desconocido
+  - name: geographic_scope
+    value: ${ (u"Varios (%d)" % (m["geographic_scope"].count("\n"))) if ("\n" in m["geographic_scope"]) else  m["geographic_scope"] }
+  - name: concept
+    xpath: string(//documento/analisis/materias_cpv)
+    default: 00000000 DESCONOCIDO
+  - name: notes
+    xpath: string(//documento/analisis/observaciones)
+
+- !!python/object:cubetl.olap.Store
+  entity: !ref dp.boe.analysis
+  mapper: !ref dp.boe.analysis.olapmapper
+
+- !ref cubetl.util.print
+

@@ -1,4 +1,62 @@
 
+---
+
+!!python/object:cubetl.table.CsvMemoryTable
+id: dp.ine.provinces_autonomies
+data: |
+  province,autonomy
+  Albacete,Castilla la Mancha
+  Alicante/Alacant,Comunidad Valenciana
+  Almería,Andalucía
+  Araba/Álava,País Vasco
+  Asturias,Asturias
+  Ávila,Castilla y León
+  Badajoz,Extremadura
+  "Balears, Illes",Comunidad Balear
+  Barcelona,Cataluña
+  Bizkaia,País Vasco
+  Burgos,Castilla y León
+  Cáceres,Extremadura
+  Cádiz,Andalucía
+  Cantabria,Cantabria
+  Castellón/Castelló,Comunidad Valenciana
+  Ciudad Real,Castilla la Mancha
+  Córdoba,Andalucía
+  "Coruña, A",Galicia
+  Cuenca,Castilla la Mancha
+  Gipuzkoa,País Vasco
+  Girona,Cataluña
+  Granada,Andalucía
+  Guadalajara,Castilla la Mancha
+  Huelva,Andalucía
+  Huesca,Aragón
+  Jaén,Andalucía
+  León,Castilla y León
+  Lleida,Cataluña
+  Lugo,Galicia
+  Madrid,Madrid
+  Málaga,Andalucía
+  Murcia,Murcia
+  Navarra,Aragón
+  Ourense,Galicia
+  Palencia,Castilla y León
+  "Palmas, Las",Canarias
+  Pontevedra,Galicia
+  "Rioja, La",Rioja
+  Salamanca,Castilla y León
+  Santa Cruz de Tenerife,Canarias
+  Segovia,Castilla y León
+  Sevilla,Andalucía
+  Soria,Castilla y León
+  Tarragona,Cataluña
+  Teruel,Aragón
+  Toledo,Castilla la Mancha
+  Valencia/València,Comunidad Valenciana
+  Valladolid,Castilla y León
+  Zamora,Castilla y León
+  Zaragoza,Aragón
+  Ceuta,Ciudades Autónomas
+  Melilla,Ciudades Autónomas
 
 ---
 
@@ -7,8 +65,33 @@ id: dp.ine.autonomy
 name: autonomy
 label: Comunidad Autónoma
 attributes:
-- name: name
+- name: autonomy
   type: String
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.ine.province
+name: province
+label: Provincia
+attributes:
+- name: province
+  type: String
+
+---
+
+!!python/object:cubetl.olap.HierarchyDimension
+id: dp.ine.autonomyprovince
+name: autonomyprovince
+label: Provincia
+#role: date
+hierarchies:
+- name: autonomyprovince
+  label: Provincia
+  levels: autonomy, province
+levels:
+- !ref dp.ine.autonomy
+- !ref dp.ine.province
 
 ---
 
@@ -22,14 +105,36 @@ attributes:
 
 ---
 
+!!python/object:cubetl.olap.Dimension
+id: dp.ine.age
+name: age
+label: Edad (Rango)
+attributes:
+- name: age
+  type: String
+
+---
+
+!!python/object:cubetl.olap.Dimension
+id: dp.ine.nationality
+name: nationality
+label: Nacionalidad
+attributes:
+- name: nationality
+  type: String
+
+---
+
 !!python/object:cubetl.olap.Fact
 id: dp.ine.census
 name: ine_census
 label: INE / Censo
 dimensions:
-- !ref cubetl.datetime.year
+- !ref cubetl.datetime.datemonthly
+- !ref dp.ine.autonomyprovince
 - !ref dp.ine.genre
-- !ref dp.ine.autonomy
+- !ref dp.ine.nationality
+- !ref dp.ine.age
 measures:
 - name: census
   type: Integer
@@ -40,26 +145,78 @@ measures:
 id: dp.ine.census.olapmapper
 #include:
 mappers:
-- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
-  entity: !ref cubetl.datetime.year
-- !!python/object:cubetl.olap.sql.EmbeddedDimensionMapper
-  entity: !ref dp.ine.genre
+- !!python/object:cubetl.olap.sql.CompoundHierarchyDimensionMapper
+  entity: !ref cubetl.datetime.datemonthly
+  table: datemonthly
+  connection: !ref dp.sql.connection
+  eval:
+  - name: _cubetl_datetime_date
+    value: ${ m['date'] }
+  mappings:
+  - !ref cubetl.datetime.mappings
 - !!python/object:cubetl.olap.sql.DimensionMapper
   entity: !ref dp.ine.autonomy
   table: ine_autonomy
   connection: !ref dp.sql.connection
+  lookup_cols: autonomy
+  mappings:
+  - name: autonomy_id
+    pk: True
+    type: AutoIncrement
+  - name: autonomy
+    value: ${ m["autonomy_name"] }
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.ine.province
+  table: ine_province
+  connection: !ref dp.sql.connection
+  lookup_cols: province
+  mappings:
+  - name: province_id
+    pk: True
+    type: Integer
+    value: ${ m['province_id'] }
+  - name: province
+    value: ${ m['province_name'] }
+- !!python/object:cubetl.olap.sql.MultiTableHierarchyDimensionMapper
+  entity: !ref dp.ine.autonomyprovince
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.ine.nationality
+  table: ine_nationality
+  connection: !ref dp.sql.connection
+  lookup_cols: nationality
   mappings:
   - name: id
     pk: True
-    value: ${ m["autonomy_id"] }
-    type: Integer
-  - name: name
-    value: ${ m["autonomy_name"] }
+    type: AutoIncrement
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.ine.age
+  table: ine_age
+  connection: !ref dp.sql.connection
+  lookup_cols: age
+  mappings:
+  - name: id
+    pk: True
+    type: AutoIncrement
+- !!python/object:cubetl.olap.sql.DimensionMapper
+  entity: !ref dp.ine.genre
+  table: ine_genre
+  connection: !ref dp.sql.connection
+  lookup_cols: genre
+  mappings:
+  - name: id
+    pk: True
+    type: AutoIncrement
 - !!python/object:cubetl.olap.sql.FactMapper
   entity: !ref dp.ine.census
   table: ine_census
   connection: !ref dp.sql.connection
-  lookup_cols: year, genre, autonomy_id
+  lookup_cols: datemonthly_id, autonomy_id, province_id, genre_id, nationality_id, age_id
+  store_mode: insert
+  auto_store:
+  - !ref cubetl.datetime.datemonthly
+  - !ref dp.ine.nationality
+  - !ref dp.ine.genre
+  - !ref dp.ine.age
   mappings:
   - name: id
     pk: True
@@ -77,7 +234,7 @@ steps:
   - !ref dp.sql.transaction
   - !!python/object:cubetl.fs.FileReader
     encoding: null
-    path: ${ ctx.props['dir_data'] }/ine/data/9689.px
+    path: ${ ctx.props['dir_data'] }/ine/data/census-2002.px
   - !!python/object:cubetl.pcaxis.PCAxisParser
     _dummy:
   - !!python/object:cubetl.flow.Chain
@@ -91,23 +248,54 @@ steps:
         value: null
       - name: pcaxis
         value: null
+
+    - !!python/object:cubetl.flow.Filter
+      condition: ${ m['Sexo'] != 'Ambos sexos' and m['Grupo quinquenal de edad'] != 'Total' and m['Nacionalidad'] != 'Total' and m['Provincias'] != 'Total Nacional'  }
+    #- !!python/object:cubetl.flow.Filter
+    #  condition: ${ m['Sexo'] == 'Hombres' and m['Nacionalidad'] == u'Apátridas' and m['Periodo'] == '1 de julio de 2011'  }
+
+    - !!python/object:cubetl.script.Eval
+      eval:
+      - name: province_name
+        value: ${ " ".join(m['Provincias'].split(' ')[1:]) }
+      - name: province_id
+        value: ${ m['Provincias'].split(' ')[0] }
+      - name: date
+        value: ${ datetime.datetime(int(m['Periodo'].split(" ")[-1]), 7 if 'julio' in m['Periodo'] else 1, 1) }
+      - name: nationality
+        value: ${ m['Nacionalidad'] }
+      - name: age
+        value: ${ m['Grupo quinquenal de edad'] }
+      - name: genre
+        value: ${ m['Sexo'] }
+      - name: census
+        value: ${ m['value'] }
+
+    - !!python/object:cubetl.table.cache.CachedTableLookup
+      table: !ref dp.ine.provinces_autonomies
+      lookup:
+        province: ${ m["province_name"] }
+      mappings:
+      - name: autonomy_name
+        value: ${ autonomy }
+
     - !ref cubetl.util.print
 
-#  - !!python/object:cubetl.script.Eval
-#    eval:
-#    - name: autonomy_id
-#      value: ${ m['Idcomu'] }
-#    - name: autonomy_name
-#      value: ${ m['Comunidad'] }
-#  - !!python/object:cubetl.flow.Multiplier
-#    name: genre
-#    values: [ 'Varones', 'Mujeres' ]
-#  - !!python/object:cubetl.script.Eval
-#    eval:
-#    - name: census
-#      value: ${ float(m[m['genre']]) }
-#  - !ref cubetl.util.print
+  #    - name: autonomy_name
+  #      value: ${ m['Comunidad'] }
+
     - !!python/object:cubetl.olap.Store
+
+      entity: !ref dp.ine.autonomy
+      mapper: !ref dp.ine.census.olapmapper
+
+    - !!python/object:cubetl.olap.Store
+
+      entity: !ref dp.ine.province
+      mapper: !ref dp.ine.census.olapmapper
+
+    - !!python/object:cubetl.olap.Store
+
       entity: !ref dp.ine.census
       mapper: !ref dp.ine.census.olapmapper
 

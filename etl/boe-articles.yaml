@@ -134,6 +134,10 @@ mappers:
 
 ---
 
+!include ${ ctx.props['dir_base'] }/etl/boe-analysis.yaml
+
+---
+
 !!python/object:cubetl.flow.Chain
 id: dp.boe.process
 steps:
@@ -187,14 +191,14 @@ steps:
     entity: !ref dp.boe.article
     mapper: !ref dp.boe.olapmapper
 
-  #- !ref dp.boe.analysis
+  - !ref dp.boe.analysis.process
 
   - !!python/object:cubetl.script.Script
     code: |
 
       del(m["xml"])
       del(m["data"])
-      m["test_script"] = True
+      #m["test_script"] = True
 
   - !ref cubetl.util.print
 

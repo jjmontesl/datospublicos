@@ -1,0 +1,11 @@
+[1.1.0]
+
+    * Migrated BOE articles and analysis to YAML format.
+    * Migrated Contratos de Galicia to YAML format.
+    * Migrated Spain Census to INE PCAxis format, now includes more dimensions.
+    * Migrated Spain Census to YAML format.
+
+[1.0.0]
+    * Added initial ETL processes.
+    * Initial import into repository.
+    * Static web prototype and proof of concept.
