@@ -27,6 +27,8 @@ connection: !ref dp.sql.connection
 ---
 !include ${ ctx.props['dir_base'] }/etl/boe-articles.yaml
 ---
+!include ${ ctx.props['dir_base'] }/etl/pge-budget.yaml
+---
 
 !!python/object:cubetl.cubes.Cubes10ModelWriter
 id: dp.export-cubes
@@ -34,8 +36,7 @@ olapmapper:
   !!python/object:cubetl.olap.OlapMapper
   include:
   - !ref dp.ine.census.olapmapper
-  #- !ref dp.olapmapper.budget.autonomy
-  #- !ref dp.olapmapper.budget.general
+  - !ref dp.pge.olapmapper
   - !ref dp.boe.olapmapper
   - !ref dp.boe.analysis.olapmapper
   - !ref dp.cg.olapmapper

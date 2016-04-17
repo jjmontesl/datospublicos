@@ -84,7 +84,6 @@ attributes:
 id: dp.ine.autonomyprovince
 name: autonomyprovince
 label: Provincia
-#role: date
 hierarchies:
 - name: autonomyprovince
   label: Provincia
